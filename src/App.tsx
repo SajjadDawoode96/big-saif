@@ -1,121 +1,471 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+
+import mainLogo from './assets/brand/LOGO BIG SAIF.png'
+import baumanagementLogo from './assets/brand/BAUMANAGEMENT.png'
+import facilityManagementLogo from './assets/brand/FACILITY MANAGEMENT.png'
+import transportLogo from './assets/brand/TRANSPORT.png'
+import baumanagementBackground from './assets/services/baumanagement-bg.jpg'
+import facilityManagementBackground from './assets/services/facility-management-bg.jpg'
+import transportBackground from './assets/services/transport-bg.jpg'
+import baumanagementProject from './assets/projects2/BAUMANAGEMENT.png'
+import facilityManagementProject from './assets/projects2/FACILITY MANAGEMENT.png'
+import transportProject from './assets/projects2/TRANSPORT.png'
+
+import constructionImage from './assets/projects/fac.png'
+import buildingImage from './assets/projects/building.jpg'
+import facilityImage from './assets/projects/facility.jpg'
+import transportImage from './assets/projects/transport.png'
+
 import './App.css'
 
+const navigation = [
+  ['Leistungen', '#leistungen'],
+  ['Referenzen', '#referenzen'],
+  ['Über uns', '#ueber-uns'],
+  ['Kontakt', '#kontakt'],
+]
+
+const services = [
+  {
+    id: 'leistung-bau',
+    title: ['BAUMANAGEMENT'],
+    description:
+      'Durchdachte Leistungen für Bau-, Umbau- und Renovierungsprojekte – koordiniert und präzise umgesetzt.',
+    brandLogo: baumanagementLogo,
+    brandLogoAlt: 'BIG SAIF Baumanagement',
+    backgroundImage: baumanagementBackground,
+  },
+  {
+    id: 'leistung-facility',
+    title: ['FACILITY MANAGEMENT'],
+    description:
+      'Professionelle Reinigung und sorgfältige Gebäudepflege für dauerhaft gepflegte Innen- und Außenbereiche.',
+    brandLogo: facilityManagementLogo,
+    brandLogoAlt: 'BIG SAIF Facility Management',
+    backgroundImage: facilityManagementBackground,
+  },
+  {
+    id: 'leistung-transport',
+    title: ['TRANSPORT'],
+    description:
+      'Verlässliche Transport- und Lieferleistungen für planbare Abläufe und eine sorgfältige Abwicklung.',
+    brandLogo: transportLogo,
+    brandLogoAlt: 'BIG SAIF Transport',
+    backgroundImage: transportBackground,
+  },
+]
+
+const projects = [
+  {
+    id: 'projekt-baumanagement',
+    category: 'BAUMANAGEMENT',
+    descriptor: 'Bau & Renovierung',
+    image: baumanagementProject,
+    imageAlt: 'BIG SAIF Team bei Bau- und Renovierungsarbeiten',
+    featured: true,
+  },
+  {
+    id: 'projekt-facility-management',
+    category: 'FACILITY MANAGEMENT',
+    descriptor: 'Reinigung & Gebäudepflege',
+    image: facilityManagementProject,
+    imageAlt: 'BIG SAIF Team bei der professionellen Gebäudereinigung',
+    featured: false,
+  },
+  {
+    id: 'projekt-transport',
+    category: 'TRANSPORT',
+    descriptor: 'Transport & Lieferung',
+    image: transportProject,
+    imageAlt: 'BIG SAIF Transporter bei einer Lieferung',
+    featured: false,
+  },
+]
+
+const Arrow = () => <span aria-hidden="true">↗</span>
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const closeMenu = () => {
+    setMenuOpen(false)
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <div className="site-shell">
+      <header className="site-header">
+        <a
+          className="brand"
+          href="#top"
+          aria-label="BIG SAIF Startseite"
         >
-          Count is {count}
+          <img
+            src={mainLogo}
+            alt="BIG SAIF"
+          />
+        </a>
+
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span>
+            {menuOpen ? 'Schließen' : 'Menü'}
+          </span>
+
+          <span
+            className="menu-icon"
+            aria-hidden="true"
+          >
+            <i />
+            <i />
+          </span>
         </button>
-      </section>
 
-      <div className="ticks"></div>
+        <nav
+          id="primary-navigation"
+          className={`primary-navigation${menuOpen ? ' is-open' : ''}`}
+          aria-label="Hauptnavigation"
+        >
+          <div className="nav-links">
+            {navigation.map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={closeMenu}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <a
+            className="header-cta"
+            href="#kontakt"
+            onClick={closeMenu}
+          >
+            Angebot anfragen
+            <Arrow />
+          </a>
+        </nav>
+      </header>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <main id="top">
+        <section
+          className="hero"
+          aria-labelledby="hero-title"
+        >
+          <div className="hero-main">
+
+            <div className="hero-copy">
+              <div className="brand-lockup">
+                <span
+                  className="brand-axis"
+                  aria-hidden="true"
+                />
+
+                <div
+                  className="hero-brand"
+                  aria-label="BIG SAIF"
+                >
+                  <img
+                    src={mainLogo}
+                    alt="BIG SAIF"
+                  />
+                </div>
+
+                <span
+                  className="brand-rule brand-rule-left"
+                  aria-hidden="true"
+                />
+
+                <span
+                  className="brand-rule brand-rule-right"
+                  aria-hidden="true"
+                />
+              </div>
+
+              <p className="eyebrow">
+                <span>PROFESSIONELLE LÖSUNGEN</span>
+                <span>IN DEUTSCHLAND</span>
+              </p>
+
+              <h1 id="hero-title">
+                <span>BAU.</span>
+                <span>FACILITY.</span>
+                <span>TRANSPORT.</span>
+              </h1>
+
+              <div className="hero-intro">
+                <p>
+                  Professionelle Lösungen für Unternehmen und Privatkunden –
+                  zuverlässig geplant, präzise umgesetzt.
+                </p>
+
+                <div className="hero-actions">
+                  <a
+                    className="button button-primary"
+                    href="#kontakt"
+                  >
+                    Angebot anfragen
+                    <Arrow />
+                  </a>
+
+                  <a
+                    className="button button-secondary"
+                    href="#referenzen"
+                  >
+                    Referenzen ansehen
+                    <Arrow />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <aside
+              className="project-visual"
+              aria-label="BIG SAIF Projektbilder"
+            >
+
+              {/* الخطوط الهندسية الجديدة */}
+              <svg
+                className="engineering-map"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+
+                {/* FRAME 01 */}
+                <path
+                  className="engineering-path engineering-path-white"
+                  d="
+                    M73 2
+                    L73 43.2
+                    L5.9 43.2
+                    L5.9 25
+                    L27.3 9.2
+                    Z
+                  "
+                />
+
+                {/* FRAME 02 */}
+                <path
+                  className="engineering-path engineering-path-white"
+                  d="
+                    M95.9 10.5
+                    L95.9 65.4
+                    L52.1 65.4
+                    L44.4 67.5
+                    L44.4 44.4
+                    L74.5 44.4
+                    L74.5 10.5
+                    Z
+                  "
+                />
+
+                {/* FRAME 03 */}
+                <path
+                  className="engineering-path engineering-path-white"
+                  d="
+                    M42.9 44.4
+                    L42.9 68.2
+                    L6.2 77.7
+                    L6.2 44.4
+                    Z
+                  "
+                />
+
+                {/* FRAME 04 */}
+                <path
+                  className="engineering-path engineering-path-white"
+                  d="
+                    M95.6 66.6
+                    L95.1 82.6
+                    L82.5 93.6
+                    L6.5 93.6
+                    L6.5 78.8
+                    L52.8 66.6
+                    Z
+                  "
+                />
+
+                {/* Accent فوق FRAME 01 */}
+                <path
+                  className="engineering-path engineering-path-orange engineering-path-moving"
+                  d="M27.3 9.2 L73 2"
+                />
+
+                {/* Accent بمنتصف الـComposition */}
+                <path
+                  className="engineering-path engineering-path-orange engineering-path-moving engineering-delay-1"
+                  d="M44.4 44.4 L74.5 44.4"
+                />
+
+                {/* Accent فوق FRAME 04 */}
+                <path
+                  className="engineering-path engineering-path-orange engineering-path-moving engineering-delay-2"
+                  d="M52.8 66.6 L95.6 66.6"
+                />
+
+              </svg>
+
+              <div className="project-frame frame-primary">
+                <img
+                  src={buildingImage}
+                  alt="BIG SAIF Bau und Renovierung"
+                />
+              </div>
+
+              <div className="project-frame frame-secondary">
+                <img
+                  src={constructionImage}
+                  alt="BIG SAIF Gebäudemanagement"
+                />
+              </div>
+
+              <div className="project-frame frame-tertiary">
+                <img
+                  src={facilityImage}
+                  alt="BIG SAIF Facility Management"
+                />
+              </div>
+
+              <div className="project-frame frame-wide">
+                <img
+                  src={transportImage}
+                  alt="BIG SAIF Transport und Lieferung"
+                />
+              </div>
+
+            </aside>
+
+          </div>
+
+        </section>
+
+        <section
+          id="leistungen"
+          className="services-section"
+          aria-labelledby="services-title"
+        >
+          <div className="services-inner">
+            <header className="services-intro">
+              <p className="services-eyebrow">UNSERE LEISTUNGEN</p>
+
+              <h2 id="services-title">
+                <span>DREI BEREICHE.</span>
+                <span>EIN ZUVERLÄSSIGER PARTNER.</span>
+              </h2>
+
+              <p className="services-summary">
+                BIG SAIF verbindet Leistungen rund um Bau und Renovierung,
+                Reinigung und Gebäudepflege sowie Transport und Lieferung in
+                einer klar koordinierten Zusammenarbeit.
+              </p>
+            </header>
+
+            <div className="services-grid">
+              {services.map((service) => (
+                <article
+                  id={service.id}
+                  className="service-panel"
+                  key={service.id}
+                >
+                  <div className="service-image">
+                    <img
+                      className="service-background"
+                      src={service.backgroundImage}
+                      alt=""
+                      aria-hidden="true"
+                    />
+
+                    <img
+                      className="service-logo"
+                      src={service.brandLogo}
+                      alt={service.brandLogoAlt}
+                    />
+                  </div>
+
+                  <div className="service-content">
+                    <p>{service.description}</p>
+
+                    <a
+                      className="service-link"
+                      href={`#${service.id}`}
+                      aria-label={`Mehr über ${service.title.join(' ')} erfahren`}
+                    >
+                      Mehr erfahren
+                      <Arrow />
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="referenzen"
+          className="projects-section"
+          aria-labelledby="projects-title"
+        >
+          <div className="projects-inner">
+            <header className="projects-intro">
+              <p className="projects-eyebrow">AUSGEWÄHLTE PROJEKTE</p>
+
+              <h2 id="projects-title">
+                <span>ARBEIT,</span>
+                <span>DIE FÜR SICH SPRICHT.</span>
+              </h2>
+
+              <p className="projects-summary">
+                Ausgewählte Referenzen aus Baumanagement, Facility Management
+                und Transport zeigen die Bandbreite unserer täglichen Arbeit.
+              </p>
+            </header>
+
+            <div className="projects-grid">
+              {projects.map((project) => (
+                <article
+                  id={project.id}
+                  className={`project-tile${project.featured ? ' project-tile-featured' : ''}`}
+                  key={project.id}
+                >
+                  <a
+                    className="project-link"
+                    href={`#${project.id}`}
+                    aria-label={`${project.category}: Projekt ansehen`}
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.imageAlt}
+                    />
+
+                    <span className="project-overlay" aria-hidden="true" />
+
+                    <span className="project-content">
+                      <span className="project-descriptor">
+                        {project.descriptor}
+                      </span>
+
+                      <strong>{project.category}</strong>
+
+                      <span className="project-action">
+                        Projekt ansehen
+                        <Arrow />
+                      </span>
+                    </span>
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   )
 }
 
