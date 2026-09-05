@@ -541,7 +541,6 @@ function App() {
                   <img src={mainLogo} alt="BIG SAIF" loading="lazy" />
                 </div>
                 <div className="about-stage-platform" aria-hidden="true">
-                  <span className="about-stage-platform-top" />
                   <span className="about-stage-platform-front" />
                   <span className="about-stage-platform-base" />
                 </div>
@@ -590,6 +589,71 @@ function App() {
               </article>
             </div>
 
+          </div>
+        </section>
+        <section
+          id="kontakt"
+          className="closing-section"
+          aria-labelledby="contact-title"
+        >
+          <div className="closing-inner">
+            <div className="closing-cta">
+              <p className="closing-eyebrow">KONTAKT</p>
+
+              <div className="closing-cta-content">
+                <h2 id="contact-title">
+                  <span>BEREIT FÜR IHR</span>
+                  <span>NÄCHSTES PROJEKT?</span>
+                </h2>
+
+                <div className="closing-cta-action">
+                  <p>
+                    Sprechen Sie mit BIG SAIF über Ihr Projekt oder Ihren
+                    konkreten Leistungsbedarf.
+                  </p>
+
+                  <a className="closing-button" href="#kontakt">
+                    PROJEKT ANFRAGEN
+                    <Arrow />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="closing-signature" aria-hidden="true">BIG SAIF</div>
+
+            <footer className="site-footer">
+              <div className="footer-grid">
+                <div className="footer-brand">
+                  <p>BIG SAIF</p>
+                  <span>BAU. FACILITY. TRANSPORT.</span>
+                </div>
+
+                <div className="footer-column">
+                  <h3>LEISTUNGEN</h3>
+                  <a href="#leistungen">Baumanagement</a>
+                  <a href="#leistungen">Facility Management</a>
+                  <a href="#leistungen">Transport</a>
+                </div>
+
+                <div className="footer-column">
+                  <h3>NAVIGATION</h3>
+                  <a href="#top">Start</a>
+                  <a href="#leistungen">Leistungen</a>
+                  <a href="#referenzen">Referenzen</a>
+                  <a href="#ueber-uns">Über BIG SAIF</a>
+                </div>
+
+              </div>
+
+              <div className="footer-bottom">
+                <span>© 2026 BIG SAIF</span>
+                <div>
+                  <a href="#impressum">Impressum</a>
+                  <a href="#datenschutz">Datenschutz</a>
+                </div>
+              </div>
+            </footer>
           </div>
         </section>
       </main>
