@@ -1304,6 +1304,41 @@ h1 span:nth-child(3) {
     font-weight: 750;
   }
 
+  .project-tile:not(.project-tile-featured) .project-content {
+    gap: 0.7rem;
+  }
+
+  .project-tile:not(.project-tile-featured) .project-descriptor {
+    color: rgba(255, 255, 255, 0.86);
+    line-height: 1.4;
+  }
+
+  .project-tile:not(.project-tile-featured) .project-action {
+    /* Keep the same title-to-divider distance as the featured tile. */
+    margin-top: 0.2rem;
+  }
+
+  #projekt-facility-management .project-content strong {
+    max-width: 12ch;
+    line-height: 1.12;
+  }
+
+  #projekt-facility-management .project-overlay {
+    background:
+      linear-gradient(180deg, transparent 15%, rgba(0, 0, 0, 0.8) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.32), transparent 75%);
+  }
+
+  #projekt-transport .project-link > img {
+    object-position: 42% 65%;
+  }
+
+  #projekt-transport .project-overlay {
+    background:
+      linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.8) 100%),
+      linear-gradient(25deg, rgba(0, 0, 0, 0.48), transparent 65%);
+  }
+
   .project-link:hover > img,
   .project-link:focus-visible > img {
     transform: scale(1.025);
