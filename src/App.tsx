@@ -535,8 +535,6 @@ function App() {
                 className={`about-brand-stage${aboutStageActive ? ' is-active' : ''}`}
                 aria-label="BIG SAIF Markenauftritt"
               >
-                <span className="about-stage-line about-stage-line-top" aria-hidden="true" />
-                <span className="about-stage-line about-stage-line-side" aria-hidden="true" />
                 <div className="about-stage-logo">
                   <img src={mainLogo} alt="BIG SAIF" loading="lazy" />
                 </div>

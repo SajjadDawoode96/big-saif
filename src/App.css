@@ -1896,10 +1896,6 @@ h1 span:nth-child(3) {
   background: transparent;
 }
 
-.about-brand-stage::before {
-  content: none;
-}
-
 .about-brand-stage::after {
   content: '';
   position: absolute;
@@ -1911,24 +1907,6 @@ h1 span:nth-child(3) {
   background: linear-gradient(90deg, transparent, var(--color-orange) 20% 80%, transparent);
   opacity: 0.14;
   box-shadow: 0 0 17px rgba(247, 148, 45, 0.22);
-}
-
-.about-stage-line {
-  display: none;
-}
-
-.about-stage-line-top {
-  top: 8%;
-  left: 8%;
-  width: 24%;
-  height: 1px;
-}
-
-.about-stage-line-side {
-  top: 8%;
-  left: 8%;
-  width: 1px;
-  height: 15%;
 }
 
 .about-stage-logo {
@@ -2159,7 +2137,6 @@ h1 span:nth-child(3) {
 }
 
 .why-strength {
-  position: relative;
   min-width: 0;
   padding: clamp(1.75rem, 3vw, 2.75rem) clamp(1.25rem, 3vw, 3rem);
 }
