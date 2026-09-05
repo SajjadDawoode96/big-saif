@@ -550,6 +550,48 @@ function App() {
 
           </div>
         </section>
+        <section
+          id="warum-big-saif"
+          className="why-section"
+          aria-labelledby="why-title"
+        >
+          <div className="why-inner">
+            <header className="why-intro">
+              <p className="why-eyebrow">WARUM BIG SAIF</p>
+
+              <h2 id="why-title">
+                <span>ALLES AUS</span>
+                <span>EINER HAND.</span>
+              </h2>
+
+              <p>
+                BIG SAIF verbindet zuverlässige Umsetzung, direkte Kommunikation
+                und koordinierte Leistungen unter einem Unternehmen.
+              </p>
+            </header>
+
+            <div className="why-strengths">
+              <article className="why-strength">
+                <span className="why-strength-number">01</span>
+                <h3>SCHNELL</h3>
+                <p>Schnelle Rückmeldung und effiziente Umsetzung für klare Abläufe.</p>
+              </article>
+
+              <article className="why-strength">
+                <span className="why-strength-number">02</span>
+                <h3>PROFESSIONELL</h3>
+                <p>Strukturiert geplant und zuverlässig ausgeführt.</p>
+              </article>
+
+              <article className="why-strength">
+                <span className="why-strength-number">03</span>
+                <h3>ZUVERLÄSSIG</h3>
+                <p>Direkte Kommunikation und Begleitung auch nach der Leistung.</p>
+              </article>
+            </div>
+
+          </div>
+        </section>
       </main>
     </div>
   )
