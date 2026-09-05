@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import mainLogo from './assets/brand/LOGO BIG SAIF.png'
 import baumanagementLogo from './assets/brand/BAUMANAGEMENT.png'
@@ -86,6 +86,48 @@ const Arrow = () => <span aria-hidden="true">↗</span>
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [aboutStageActive, setAboutStageActive] = useState(false)
+  const aboutStageRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration
+
+    window.history.scrollRestoration = 'manual'
+
+    if (window.location.hash) {
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${window.location.search}`,
+      )
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration
+    }
+  }, [])
+
+  useEffect(() => {
+    const stage = aboutStageRef.current
+
+    if (!stage) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAboutStageActive(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.35 },
+    )
+
+    observer.observe(stage)
+
+    return () => observer.disconnect()
+  }, [])
 
   const closeMenu = () => {
     setMenuOpen(false)
@@ -462,6 +504,50 @@ function App() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+        <section
+          id="ueber-uns"
+          className="about-section"
+          aria-labelledby="about-title"
+        >
+          <div className="about-inner">
+            <p className="about-eyebrow">ÜBER BIG SAIF</p>
+
+            <div className="about-composition">
+              <div className="about-copy">
+                <h2 id="about-title">
+                  <span>EIN PARTNER.</span>
+                  <span className="about-title-accent">DREI</span>
+                  <span>LEISTUNGSBEREICHE.</span>
+                </h2>
+
+                <p className="about-summary">
+                  BIG SAIF verbindet Baumanagement, Facility Management und
+                  Transport in einem zuverlässigen Leistungsverbund. Klare
+                  Abläufe, direkte Kommunikation und eine professionelle
+                  Umsetzung stehen dabei im Mittelpunkt.
+                </p>
+              </div>
+
+              <div
+                ref={aboutStageRef}
+                className={`about-brand-stage${aboutStageActive ? ' is-active' : ''}`}
+                aria-label="BIG SAIF Markenauftritt"
+              >
+                <span className="about-stage-line about-stage-line-top" aria-hidden="true" />
+                <span className="about-stage-line about-stage-line-side" aria-hidden="true" />
+                <div className="about-stage-logo">
+                  <img src={mainLogo} alt="BIG SAIF" loading="lazy" />
+                </div>
+                <div className="about-stage-platform" aria-hidden="true">
+                  <span className="about-stage-platform-top" />
+                  <span className="about-stage-platform-front" />
+                  <span className="about-stage-platform-base" />
+                </div>
+              </div>
+            </div>
+
           </div>
         </section>
       </main>
