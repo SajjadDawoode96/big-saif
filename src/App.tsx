@@ -84,6 +84,293 @@ const projects = [
 
 const Arrow = () => <span aria-hidden="true">↗</span>
 
+type BaumanagementProjectComparison = {
+  id: string
+  beforeImage: string
+  afterImage: string
+  title?: string
+  description?: string
+  altBefore: string
+  altAfter: string
+}
+
+const baumanagementProjectGroups: { id: string; projects: BaumanagementProjectComparison[] }[] = [
+  {
+    id: 'project-group-1',
+    projects: [
+      { id: 'group-1-project-1', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-1-project-2', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-1-project-3', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-1-project-4', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-1-project-5', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+    ],
+  },
+  {
+    id: 'project-group-2',
+    projects: [
+      { id: 'group-2-project-1', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-2-project-2', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-2-project-3', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-2-project-4', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+      { id: 'group-2-project-5', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
+    ],
+  },
+]
+
+const baumanagementServiceAreas = [
+  {
+    number: '01',
+    title: 'BAUARBEITEN',
+    description: 'Allgemeine Bauarbeiten und bauliche Umsetzung für unterschiedliche Projekte.',
+  },
+  {
+    number: '02',
+    title: 'RENOVIERUNG & SANIERUNG',
+    description: 'Renovierung, Erneuerung und Aufwertung bestehender Gebäude und Räume.',
+  },
+  {
+    number: '03',
+    title: 'UMBAU & MODERNISIERUNG',
+    description: 'Anpassung, Veränderung und Modernisierung bestehender Bereiche.',
+  },
+  {
+    number: '04',
+    title: 'REPARATURARBEITEN',
+    description: 'Reparatur- und Instandsetzungsarbeiten rund um Gebäude und Innenbereiche.',
+  },
+  {
+    number: '05',
+    title: 'INNENAUSBAU',
+    description: 'Ausbau und Gestaltung von Innenräumen im Rahmen individueller Projekte.',
+  },
+  {
+    number: '06',
+    title: 'DEKORATION & GESTALTUNG',
+    description: 'Dekorative Arbeiten, Gestaltung und abschließende Details für Innenbereiche.',
+  },
+]
+
+function BeforeAfterComparison({
+  project,
+  position,
+  onPositionChange,
+  comparisonLabel,
+}: {
+  project: BaumanagementProjectComparison
+  position: number
+  onPositionChange: (position: number) => void
+  comparisonLabel: string
+}) {
+  const comparisonRef = useRef<HTMLDivElement>(null)
+  const afterRef = useRef<HTMLDivElement>(null)
+  const dividerRef = useRef<HTMLDivElement>(null)
+  const handleRef = useRef<HTMLButtonElement>(null)
+  const positionRef = useRef(position)
+
+  const applyPosition = (nextPosition: number) => {
+    const clampedPosition = Math.min(100, Math.max(0, nextPosition))
+    positionRef.current = clampedPosition
+
+    if (afterRef.current) afterRef.current.style.clipPath = `inset(0 ${100 - clampedPosition}% 0 0)`
+    if (dividerRef.current) dividerRef.current.style.left = `${clampedPosition}%`
+    if (handleRef.current) handleRef.current.style.left = `${clampedPosition}%`
+  }
+
+  const updatePosition = (clientX: number) => {
+    const bounds = comparisonRef.current?.getBoundingClientRect()
+    if (!bounds) return
+
+    applyPosition(((clientX - bounds.left) / bounds.width) * 100)
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    const step = 5
+    const nextPosition = event.key === 'ArrowLeft'
+      ? position - step
+      : event.key === 'ArrowRight'
+        ? position + step
+        : event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? 100
+            : null
+
+    if (nextPosition === null) return
+    event.preventDefault()
+    onPositionChange(Math.min(100, Math.max(0, nextPosition)))
+  }
+
+  return (
+    <div
+      ref={comparisonRef}
+      className="baumanagement-comparison"
+      onPointerDown={(event) => {
+        event.currentTarget.setPointerCapture(event.pointerId)
+        updatePosition(event.clientX)
+      }}
+      onPointerMove={(event) => {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) updatePosition(event.clientX)
+      }}
+      onPointerUp={(event) => {
+        event.currentTarget.releasePointerCapture(event.pointerId)
+        onPositionChange(positionRef.current)
+      }}
+      onPointerCancel={() => onPositionChange(positionRef.current)}
+    >
+      <img className="baumanagement-comparison-image" src={project.beforeImage} alt={project.altBefore} loading="lazy" />
+      <div ref={afterRef} className="baumanagement-comparison-after" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
+        <img className="baumanagement-comparison-image" src={project.afterImage} alt={project.altAfter} loading="lazy" />
+      </div>
+      <span className="baumanagement-comparison-label baumanagement-comparison-label-before">VORHER</span>
+      <span className="baumanagement-comparison-label baumanagement-comparison-label-after">NACHHER</span>
+      <div ref={dividerRef} className="baumanagement-comparison-divider" style={{ left: `${position}%` }} aria-hidden="true" />
+      <button
+        ref={handleRef}
+        className="baumanagement-comparison-handle"
+        type="button"
+        style={{ left: `${position}%` }}
+        role="slider"
+        aria-label={comparisonLabel}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(position)}
+        onKeyDown={handleKeyDown}
+      >
+        <span aria-hidden="true">←</span><span aria-hidden="true">→</span>
+      </button>
+    </div>
+  )
+}
+
+function BaumanagementProjectGroup({ group, groupNumber }: { group: (typeof baumanagementProjectGroups)[number]; groupNumber: number }) {
+  const initialProjectIndex = Math.min(1, group.projects.length - 1)
+  const [activeIndex, setActiveIndex] = useState(initialProjectIndex)
+  const [comparisonPositions, setComparisonPositions] = useState(() => group.projects.map(() => 50))
+  const railRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    railRef.current?.children[initialProjectIndex]?.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' })
+  }, [initialProjectIndex])
+
+  const updateComparisonPosition = (projectIndex: number, position: number) => {
+    setComparisonPositions((current) => current.map((item, index) => (index === projectIndex ? position : item)))
+  }
+
+  const goToProject = (nextIndex: number) => {
+    const index = Math.min(group.projects.length - 1, Math.max(0, nextIndex))
+    setActiveIndex(index)
+    railRef.current?.children[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+  }
+
+  return (
+    <div className="baumanagement-project-group">
+      <div className="baumanagement-showcase-rail-shell">
+        <div ref={railRef} className="baumanagement-showcase-rail">
+          {group.projects.map((project, index) => (
+            <article className={`baumanagement-project${index === activeIndex ? ' is-active' : ''}`} key={project.id}>
+              <BeforeAfterComparison
+                project={project}
+                position={comparisonPositions[index]}
+                onPositionChange={(position) => updateComparisonPosition(index, position)}
+                comparisonLabel={`Vorher-Nachher-Vergleich, Gruppe ${groupNumber}, Projekt ${index + 1} verschieben`}
+              />
+              {(project.title || project.description) && (
+                <div className="baumanagement-project-meta">
+                  {project.title && <h3>{project.title}</h3>}
+                  {project.description && <p>{project.description}</p>}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="baumanagement-showcase-navigation" aria-label={`Referenzen Gruppe ${groupNumber} navigieren`}>
+        <button type="button" aria-label={`Vorherige Referenz in Gruppe ${groupNumber}`} onClick={() => goToProject(activeIndex - 1)} disabled={activeIndex === 0}>←</button>
+        <div className="baumanagement-showcase-indicators" aria-label={`Referenz in Gruppe ${groupNumber} auswählen`}>
+          {group.projects.map((project, index) => (
+            <button type="button" key={project.id} className={index === activeIndex ? 'is-active' : ''} aria-label={`Referenz ${index + 1} in Gruppe ${groupNumber} auswählen`} aria-current={index === activeIndex ? 'true' : undefined} onClick={() => goToProject(index)} />
+          ))}
+        </div>
+        <button type="button" aria-label={`Nächste Referenz in Gruppe ${groupNumber}`} onClick={() => goToProject(activeIndex + 1)} disabled={activeIndex === group.projects.length - 1}>→</button>
+      </div>
+    </div>
+  )
+}
+
+function BaumanagementProjectShowcase() {
+  return (
+    <section className="baumanagement-showcase" aria-labelledby="references-title">
+      <div className="baumanagement-showcase-inner">
+        <header className="baumanagement-showcase-header">
+          <div>
+            <p>UNSERE REFERENZEN</p>
+            <h2 id="references-title"><span>VORHER &amp;</span><span>NACHHER</span></h2>
+          </div>
+          <p className="baumanagement-showcase-intro">Einblicke in unsere bisherigen Arbeiten.</p>
+        </header>
+
+        <div className="baumanagement-project-groups">
+          {baumanagementProjectGroups.map((group, index) => (
+            <BaumanagementProjectGroup group={group} groupNumber={index + 1} key={group.id} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function BaumanagementServiceAreas() {
+  const [activeServiceIndex, setActiveServiceIndex] = useState(0)
+  const activeService = baumanagementServiceAreas[activeServiceIndex]
+
+  return (
+    <section className="baumanagement-transition" aria-labelledby="service-areas-title">
+      <div>
+        <header className="baumanagement-transition-header">
+          <div className="baumanagement-transition-title-block">
+            <p>BAUMANAGEMENT</p>
+            <h2 id="service-areas-title">LEISTUNGSBEREICHE</h2>
+          </div>
+          <p className="baumanagement-transition-intro">Von Bau- und Renovierungsarbeiten über Reparaturen bis hin zu Innenausbau und Gestaltung – Leistungen für unterschiedliche Anforderungen rund um Gebäude und Räume.</p>
+        </header>
+
+        <div className="baumanagement-service-stage">
+          <div className="baumanagement-service-feature" aria-live="polite">
+            <div className="baumanagement-service-feature-content" key={activeService.number}>
+              <span className="baumanagement-service-feature-number">{activeService.number}</span>
+              <h3>{activeService.title}</h3>
+              <p>{activeService.description}</p>
+            </div>
+          </div>
+
+          <ol className="baumanagement-service-index" aria-label="Leistungsbereiche auswählen">
+            {baumanagementServiceAreas.map((service, index) => {
+              const isActive = index === activeServiceIndex
+
+              return (
+                <li key={service.number}>
+                  <button
+                    className={isActive ? 'is-active' : ''}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setActiveServiceIndex(index)}
+                    onFocus={() => setActiveServiceIndex(index)}
+                    onMouseEnter={() => setActiveServiceIndex(index)}
+                  >
+                    <span>{service.number}</span>
+                    <span>{service.title}</span>
+                  </button>
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const links = navigation.map(([label, href]) => [label, servicePage ? `/${href}` : href])
@@ -166,6 +453,9 @@ function BaumanagementPage() {
       <SiteHeader servicePage />
       <main>
         <section className="baumanagement-hero" aria-label="Baumanagement">
+          <div className="baumanagement-logo-reveal">
+            <img className="baumanagement-hero-logo" src="/baumanagement-logo-transparent.png" alt="BIG SAIF Baumanagement" />
+          </div>
           <div className="baumanagement-editorial">
             <div className="baumanagement-editorial-content">
               <h1><span>BAU &amp;</span><span>RENOVIERUNG.</span></h1>
@@ -173,17 +463,10 @@ function BaumanagementPage() {
               <a className="baumanagement-button" href="/#kontakt">PROJEKT ANFRAGEN <Arrow /></a>
             </div>
           </div>
-          <div className="baumanagement-logo-reveal">
-            <img className="baumanagement-hero-logo" src="/baumanagement-logo-transparent.png" alt="BIG SAIF Baumanagement" />
-          </div>
         </section>
 
-        <section className="baumanagement-transition" aria-labelledby="service-areas-title">
-          <div>
-            <p>BAUMANAGEMENT</p>
-            <h2 id="service-areas-title">LEISTUNGSBEREICHE</h2>
-          </div>
-        </section>
+        <BaumanagementServiceAreas />
+        <BaumanagementProjectShowcase />
       </main>
       <div className="baumanagement-footer-shell"><SiteFooter servicePage /></div>
     </div>

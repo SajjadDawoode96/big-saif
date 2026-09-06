@@ -8,6 +8,9 @@
   --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-heading: Manrope, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --page-gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --content-max: 1440px;
+  --section-space: clamp(4.5rem, 7vw, 7.5rem);
+  --section-space-compact: clamp(3.5rem, 5vw, 5rem);
   --max-width: 1600px;
   font-family: var(--font-sans);
   color: var(--color-charcoal);
@@ -20,10 +23,23 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { min-width: 320px; min-height: 100vh; margin: 0; overflow-x: hidden; background: var(--color-charcoal); }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--color-charcoal); }
 button, a { font: inherit; }
 button { color: inherit; }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
 ::selection { color: var(--color-charcoal); background: var(--color-orange); }
 :focus-visible { outline: 2px solid var(--color-orange); outline-offset: 4px; }
+
+@media (max-width: 699px) {
+  :root {
+    --section-space: clamp(4rem, 14vw, 5rem);
+    --section-space-compact: clamp(3rem, 11vw, 4rem);
+  }
+}
+
+@media (min-width: 700px) and (max-width: 1099px) {
+  :root {
+    --page-gutter: clamp(2rem, 5vw, 3rem);
+  }
+}

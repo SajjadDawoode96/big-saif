@@ -2816,17 +2816,18 @@ h1 span:nth-child(3) {
   .baumanagement-logo-reveal {
     right: auto;
     left: 50%;
-    width: min(25rem, 112vw);
+    width: min(25rem, calc(100% - (var(--page-gutter) * 2)));
+    max-width: calc(100% - (var(--page-gutter) * 2));
     transform: translate(-50%, -50%);
   }
 
   .baumanagement-logo-reveal::before {
-    inset: -10%;
+    inset: 0;
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.12) 48%, transparent 74%);
   }
 
   .baumanagement-logo-reveal::after {
-    inset: -18%;
+    inset: 0;
     background: radial-gradient(ellipse at 50% 48%, rgba(216, 165, 65, 0.05) 0%, rgba(216, 165, 65, 0.025) 42%, transparent 74%);
   }
 
@@ -2882,12 +2883,25 @@ h1 span:nth-child(3) {
 }
 
 .baumanagement-transition > div {
-  padding-top: clamp(3rem, 6vw, 5rem);
-  padding-bottom: clamp(3.5rem, 7vw, 6rem);
+  padding-top: clamp(4rem, 7vw, 6.5rem);
+  padding-bottom: clamp(4.5rem, 8vw, 7rem);
 }
 
-.baumanagement-transition p {
-  margin: 0 0 1rem;
+.baumanagement-transition-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.7fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: center;
+}
+
+.baumanagement-transition-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.baumanagement-transition-title-block > p {
+  margin: 0;
   color: var(--baumanagement-gold);
   font-size: 0.75rem;
   font-weight: 750;
@@ -2902,6 +2916,814 @@ h1 span:nth-child(3) {
   letter-spacing: -0.055em;
 }
 
+.baumanagement-transition-intro {
+  max-width: 30rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.baumanagement-service-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+  margin-top: clamp(3rem, 5vw, 4.75rem);
+  border-top: 1px solid rgba(var(--baumanagement-gold-rgb), 0.28);
+}
+
+.baumanagement-service-feature {
+  display: flex;
+  align-items: center;
+  min-height: clamp(28rem, 43vw, 37rem);
+  padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 6vw, 7rem) clamp(3rem, 6vw, 6rem) 0;
+  border-right: 1px solid rgba(var(--baumanagement-gold-rgb), 0.42);
+}
+
+.baumanagement-service-feature-content {
+  animation: baumanagement-service-feature-enter 280ms ease-out;
+}
+
+.baumanagement-service-feature-number {
+  display: block;
+  margin-bottom: clamp(1.5rem, 3vw, 2.75rem);
+  color: var(--baumanagement-gold);
+  font-family: var(--font-heading);
+  font-size: clamp(6rem, 10vw, 10rem);
+  font-weight: 720;
+  line-height: 0.68;
+  letter-spacing: -0.09em;
+}
+
+.baumanagement-service-feature h3,
+.baumanagement-service-feature p {
+  margin: 0;
+}
+
+.baumanagement-service-feature h3 {
+  max-width: 13ch;
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4.5vw, 4.6rem);
+  font-weight: 760;
+  line-height: 0.91;
+  letter-spacing: -0.07em;
+}
+
+.baumanagement-service-feature p {
+  max-width: 31rem;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  color: rgba(255, 255, 255, 0.66);
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.7;
+}
+
+.baumanagement-service-index {
+  align-self: center;
+  margin: 0;
+  padding: clamp(1rem, 3vw, 2.5rem) 0 clamp(1rem, 3vw, 2.5rem) clamp(2rem, 4vw, 4.5rem);
+  list-style: none;
+}
+
+.baumanagement-service-index li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.baumanagement-service-index button {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: clamp(0.9rem, 1.4vw, 1.25rem) 0;
+  border: 0;
+  color: rgba(255, 255, 255, 0.68);
+  background: transparent;
+  font-family: var(--font-heading);
+  font-size: clamp(0.88rem, 1.15vw, 1.05rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-align: left;
+  transition: color 220ms ease, transform 220ms ease;
+}
+
+.baumanagement-service-index button span:first-child {
+  color: rgba(var(--baumanagement-gold-rgb), 0.72);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+  transition: color 220ms ease;
+}
+
+.baumanagement-service-index button.is-active {
+  color: var(--color-white);
+  transform: translateX(0.45rem);
+}
+
+.baumanagement-service-index button.is-active::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1.35rem;
+  height: 1px;
+  background: var(--baumanagement-gold);
+  content: '';
+  transform: translate(-2rem, -50%);
+}
+
+.baumanagement-service-index button.is-active span:first-child,
+.baumanagement-service-index button:hover span:first-child,
+.baumanagement-service-index button:focus-visible span:first-child {
+  color: var(--baumanagement-gold);
+}
+
+.baumanagement-service-index button:hover,
+.baumanagement-service-index button:focus-visible {
+  color: var(--color-white);
+}
+
+.baumanagement-service-index button:focus-visible {
+  outline: 1px solid rgba(var(--baumanagement-gold-rgb), 0.8);
+  outline-offset: -1px;
+}
+
+@keyframes baumanagement-service-feature-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .baumanagement-service-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .baumanagement-service-feature {
+    min-height: 0;
+    padding: clamp(3rem, 7vw, 5rem) 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(var(--baumanagement-gold-rgb), 0.42);
+  }
+
+  .baumanagement-service-index {
+    padding: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .baumanagement-transition-header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .baumanagement-transition h2 {
+    font-size: clamp(1.7rem, 8.3vw, 2.2rem);
+  }
+
+  .baumanagement-transition > div {
+    padding-top: 4rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .baumanagement-service-stage {
+    margin-top: 2.75rem;
+  }
+
+  .baumanagement-service-feature-number {
+    font-size: clamp(5.5rem, 27vw, 7rem);
+  }
+
+  .baumanagement-service-feature h3 {
+    font-size: clamp(2rem, 10.5vw, 3rem);
+  }
+
+  .baumanagement-service-feature p {
+    margin-top: 1.4rem;
+    font-size: 0.98rem;
+  }
+
+  .baumanagement-service-index button {
+    grid-template-columns: 2.15rem minmax(0, 1fr);
+    font-size: 0.92rem;
+  }
+
+  .baumanagement-service-index button.is-active {
+    transform: translateX(0.25rem);
+  }
+
+  .baumanagement-service-index button.is-active::before {
+    display: none;
+  }
+}
+
 .baumanagement-footer-shell {
   background: var(--color-charcoal);
+}
+
+/* ========================================
+   BAUMANAGEMENT — PROJECT SHOWCASE
+======================================== */
+
+.baumanagement-showcase {
+  overflow: hidden;
+  border-top: 1px solid rgba(var(--baumanagement-gold-rgb), 0.2);
+  background: #121212;
+}
+
+.baumanagement-showcase-inner {
+  width: min(100%, 1440px);
+  margin-inline: auto;
+  padding: clamp(4.5rem, 7vw, 7rem) var(--page-gutter) clamp(3.5rem, 5vw, 5rem);
+}
+
+.baumanagement-showcase-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.42fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: end;
+}
+
+.baumanagement-showcase-header > div > p {
+  margin: 0 0 1rem;
+  color: var(--baumanagement-gold);
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.2em;
+}
+
+.baumanagement-showcase h2 {
+  margin: 0;
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-size: clamp(2.9rem, 5.2vw, 5.25rem);
+  font-weight: 780;
+  line-height: 0.88;
+  letter-spacing: -0.075em;
+}
+
+.baumanagement-showcase h2 span {
+  display: block;
+}
+
+.baumanagement-showcase h2 span:last-child {
+  color: var(--baumanagement-gold);
+}
+
+.baumanagement-showcase-intro {
+  max-width: 23rem;
+  align-self: end;
+  margin: 0 0 0.35rem;
+  transform: translateX(-2rem);
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.baumanagement-showcase-rail-shell {
+  margin-top: clamp(2.25rem, 4vw, 3.75rem);
+}
+
+.baumanagement-project-group + .baumanagement-project-group {
+  margin-top: clamp(5rem, 8vw, 8rem);
+}
+
+.baumanagement-project-group + .baumanagement-project-group .baumanagement-showcase-rail-shell {
+  margin-top: 0;
+}
+
+.baumanagement-showcase-rail {
+  --showcase-card-width: min(34vw, 33rem);
+  --showcase-rail-gap: clamp(1rem, 1.75vw, 1.75rem);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: clamp(1.5rem, 3vw, 2.5rem) calc(50vw - (var(--showcase-card-width) / 2));
+  display: flex;
+  gap: var(--showcase-rail-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-padding-inline: calc(50vw - (var(--showcase-card-width) / 2));
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.baumanagement-showcase-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.baumanagement-project {
+  flex: 0 0 var(--showcase-card-width);
+  min-width: 0;
+  scroll-snap-align: center;
+  position: relative;
+  z-index: 1;
+  opacity: 0.58;
+  transform: translate3d(0, 0.85rem, 0) scale(0.88);
+  transform-origin: center;
+  transition: opacity 380ms ease, transform 380ms ease;
+}
+
+.baumanagement-project.is-active {
+  z-index: 2;
+  opacity: 1;
+  transform: translate3d(0, -0.5rem, 0) scale(1.18);
+}
+
+.baumanagement-project.is-active .baumanagement-comparison {
+  border-color: rgba(var(--baumanagement-gold-rgb), 0.72);
+}
+
+.baumanagement-comparison {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  isolation: isolate;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+}
+
+.baumanagement-comparison-image,
+.baumanagement-comparison-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.baumanagement-comparison-image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.baumanagement-comparison-after {
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+.baumanagement-comparison-label {
+  position: absolute;
+  z-index: 3;
+  top: 1rem;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.baumanagement-comparison-label-before {
+  left: 1rem;
+  color: var(--color-white);
+  background: rgba(21, 21, 21, 0.72);
+}
+
+.baumanagement-comparison-label-after {
+  right: 1rem;
+  color: var(--color-charcoal);
+  background: var(--baumanagement-gold);
+}
+
+.baumanagement-comparison-divider {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-white);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.baumanagement-comparison-handle {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  width: 2.55rem;
+  height: 2.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.16rem;
+  border: 1px solid rgba(var(--baumanagement-gold-rgb), 0.92);
+  border-radius: 50%;
+  color: var(--color-charcoal);
+  background: var(--baumanagement-gold);
+  font-size: 0.72rem;
+  transform: translate(-50%, -50%);
+  cursor: col-resize;
+}
+
+.baumanagement-comparison-handle:focus-visible {
+  outline: 1px solid var(--baumanagement-gold);
+  outline-offset: 2px;
+}
+
+.baumanagement-project-meta {
+  margin-top: 1.25rem;
+}
+
+.baumanagement-project-meta h3,
+.baumanagement-project-meta p {
+  margin: 0;
+}
+
+.baumanagement-project-meta h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+}
+
+.baumanagement-project-meta p {
+  margin-top: 0.4rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.baumanagement-showcase-navigation {
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.baumanagement-showcase-navigation > button {
+  width: 2.8rem;
+  height: 2.8rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(var(--baumanagement-gold-rgb), 0.8);
+  border-radius: 50%;
+  color: var(--baumanagement-gold);
+  background: #151515;
+  font-size: 1.05rem;
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+.baumanagement-showcase-navigation > button:not(:disabled):hover,
+.baumanagement-showcase-navigation > button:not(:disabled):focus-visible {
+  color: var(--color-charcoal);
+  background: var(--baumanagement-gold);
+}
+
+.baumanagement-showcase-navigation > button:disabled {
+  border-color: rgba(var(--baumanagement-gold-rgb), 0.28);
+  color: rgba(var(--baumanagement-gold-rgb), 0.34);
+}
+
+.baumanagement-showcase-indicators {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.baumanagement-showcase-indicators button {
+  width: 0.45rem;
+  height: 0.45rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.baumanagement-showcase-indicators button.is-active {
+  background: var(--baumanagement-gold);
+  transform: scale(1.25);
+}
+
+@media (max-width: 900px) {
+  .baumanagement-showcase-rail {
+    --showcase-card-width: min(70vw, 36rem);
+  }
+
+  .baumanagement-project {
+    transform: translate3d(0, 0.65rem, 0) scale(0.92);
+  }
+
+  .baumanagement-project.is-active {
+    transform: translate3d(0, -0.4rem, 0) scale(1.08);
+  }
+}
+
+@media (max-width: 700px) {
+  .baumanagement-showcase-inner {
+    padding-top: 4.5rem;
+  }
+
+  .baumanagement-showcase-header {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .baumanagement-showcase h2 {
+    font-size: clamp(2.4rem, 11.5vw, 4rem);
+  }
+
+  .baumanagement-showcase-intro {
+    max-width: 20rem;
+    transform: none;
+  }
+
+  .baumanagement-showcase-rail {
+    --showcase-card-width: min(88vw, 28rem);
+    --showcase-rail-gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .baumanagement-project-group + .baumanagement-project-group {
+    margin-top: 4.5rem;
+  }
+
+  .baumanagement-project,
+  .baumanagement-project.is-active {
+    transform: none;
+  }
+
+  .baumanagement-comparison-label {
+    top: 0.7rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .baumanagement-comparison-label-before {
+    left: 0.7rem;
+  }
+
+  .baumanagement-comparison-label-after {
+    right: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .baumanagement-service-feature-content,
+  .baumanagement-service-index button,
+  .baumanagement-service-index button span:first-child {
+    animation: none;
+    transition: none;
+  }
+
+  .baumanagement-showcase-rail {
+    scroll-behavior: auto;
+  }
+
+  .baumanagement-project,
+  .baumanagement-showcase-navigation > button,
+  .baumanagement-showcase-indicators button {
+    transition: none;
+  }
+}
+
+/* Shared mobile composition: preserve desktop geometry while giving stacked content
+   a consistent reading rhythm and safe shrink behavior. */
+@media (max-width: 699px) {
+  .site-header,
+  .hero,
+  .hero-main,
+  .services-inner,
+  .projects-inner,
+  .about-inner,
+  .why-inner,
+  .closing-inner,
+  .baumanagement-transition > div,
+  .baumanagement-showcase-inner,
+  .baumanagement-footer-shell {
+    min-width: 0;
+  }
+
+  .menu-toggle {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    justify-content: flex-end;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.65rem, 13vw, 3.3rem);
+  }
+
+  .services-inner,
+  .projects-inner {
+    padding-top: var(--section-space);
+    padding-bottom: var(--section-space);
+  }
+
+  .about-section,
+  .about-inner {
+    min-height: 0;
+  }
+
+  .about-inner {
+    padding-top: var(--section-space);
+    padding-bottom: var(--section-space);
+  }
+
+  .about-composition {
+    gap: 2rem;
+    padding-top: 0;
+  }
+
+  .about-summary {
+    margin-top: 1.75rem;
+    padding-left: 1rem;
+    line-height: 1.7;
+  }
+
+  .about-brand-stage {
+    width: 100%;
+    min-height: clamp(20rem, 75vw, 24rem);
+    justify-self: center;
+  }
+
+  .about-stage-platform::after {
+    left: 0;
+    width: 100%;
+  }
+
+  .why-inner {
+    padding-top: var(--section-space-compact);
+    padding-bottom: var(--section-space);
+  }
+
+  .why-strengths {
+    margin-top: 2.5rem;
+  }
+
+  .closing-inner {
+    padding-top: var(--section-space);
+  }
+
+  .footer-column a,
+  .footer-bottom a {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .baumanagement-hero {
+    min-height: clamp(30rem, 140vw, 34rem);
+  }
+
+  .baumanagement-editorial {
+    top: 1.75rem;
+  }
+
+  .baumanagement-editorial-content,
+  .baumanagement-editorial h1,
+  .baumanagement-editorial p,
+  .baumanagement-button {
+    max-width: 100%;
+  }
+
+  .baumanagement-transition > div {
+    padding-top: var(--section-space);
+    padding-bottom: var(--section-space);
+  }
+
+  .baumanagement-transition h2 {
+    font-size: clamp(1.25rem, 6.7vw, 2.2rem);
+  }
+
+  .baumanagement-transition-intro,
+  .baumanagement-service-feature,
+  .baumanagement-service-feature-content,
+  .baumanagement-service-index,
+  .baumanagement-service-index li,
+  .baumanagement-service-index button {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .baumanagement-service-index button {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .baumanagement-service-index button span:last-child,
+  .baumanagement-service-feature h3 {
+    overflow-wrap: anywhere;
+  }
+
+  .baumanagement-showcase-inner {
+    padding-top: var(--section-space);
+  }
+
+  .baumanagement-showcase-rail {
+    margin-top: 0;
+  }
+
+  .baumanagement-project-group + .baumanagement-project-group {
+    margin-top: var(--section-space-compact);
+  }
+}
+
+@media (max-width: 359px) {
+  .hero-copy h1 {
+    font-size: 2.2rem;
+  }
+
+  .baumanagement-editorial h1 {
+    font-size: 2.15rem;
+  }
+
+  .baumanagement-editorial p {
+    font-size: 0.8rem;
+  }
+
+  .baumanagement-showcase h2 {
+    font-size: 2.25rem;
+  }
+}
+
+/* Baumanagement mobile Hero: a content-led composition rather than the
+   desktop overlay scaled down. */
+@media (max-width: 699px) {
+  .baumanagement-hero {
+    min-height: 0;
+    padding: clamp(2.25rem, 8vw, 3.5rem) var(--page-gutter) clamp(3.5rem, 12vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-position: 56% center;
+  }
+
+  .baumanagement-logo-reveal {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: clamp(14.5rem, 68vw, 18.75rem);
+    max-width: 100%;
+    margin: 0 auto clamp(2.25rem, 8vw, 3.5rem);
+    transform: none;
+  }
+
+  .baumanagement-logo-reveal::before,
+  .baumanagement-logo-reveal::after {
+    inset: 0;
+  }
+
+  .baumanagement-hero-logo {
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+    animation: baumanagement-logo-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .baumanagement-editorial {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+  }
+
+  .baumanagement-editorial-content {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .baumanagement-editorial h1 {
+    max-width: 100%;
+    font-size: clamp(2.15rem, 10.5vw, 2.6rem);
+    line-height: 0.9;
+  }
+
+  .baumanagement-editorial p {
+    max-width: 24rem;
+    margin-top: 1rem;
+    font-size: clamp(0.82rem, 3.4vw, 0.95rem);
+    line-height: 1.6;
+  }
+
+  .baumanagement-button {
+    width: 100%;
+    min-height: 3.25rem;
+    margin-top: 1.25rem;
+  }
+
+  .baumanagement-service-feature h3 {
+    font-size: clamp(1.65rem, 7vw, 2.15rem);
+    line-height: 1.02;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .baumanagement-hero-logo {
+    animation: none;
+  }
 }
