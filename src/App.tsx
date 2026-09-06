@@ -84,10 +84,116 @@ const projects = [
 
 const Arrow = () => <span aria-hidden="true">↗</span>
 
-function App() {
+function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const links = navigation.map(([label, href]) => [label, servicePage ? `/${href}` : href])
+  const closeMenu = () => setMenuOpen(false)
+
+  return (
+    <header className="site-header">
+      <a className="brand" href={servicePage ? '/' : '#top'} aria-label="BIG SAIF Startseite">
+        <img src={mainLogo} alt="BIG SAIF" />
+      </a>
+
+      <button
+        className="menu-toggle"
+        type="button"
+        aria-expanded={menuOpen}
+        aria-controls="primary-navigation"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <span>{menuOpen ? 'Schließen' : 'Menü'}</span>
+        <span className="menu-icon" aria-hidden="true"><i /><i /></span>
+      </button>
+
+      <nav
+        id="primary-navigation"
+        className={`primary-navigation${menuOpen ? ' is-open' : ''}`}
+        aria-label="Hauptnavigation"
+      >
+        <div className="nav-links">
+          {links.map(([label, href]) => (
+            <a key={href} href={href} onClick={closeMenu}>{label}</a>
+          ))}
+        </div>
+        <a className="header-cta" href={servicePage ? '/#kontakt' : '#kontakt'} onClick={closeMenu}>
+          Angebot anfragen
+          <Arrow />
+        </a>
+      </nav>
+    </header>
+  )
+}
+
+function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
+  const homeLink = (hash: string) => (servicePage ? `/${hash}` : hash)
+
+  return (
+    <footer className="site-footer">
+      <div className="footer-grid">
+        <div className="footer-brand">
+          <p>BIG SAIF</p>
+          <span>BAU. FACILITY. TRANSPORT.</span>
+        </div>
+        <div className="footer-column">
+          <h3>LEISTUNGEN</h3>
+          <a href={servicePage ? '/baumanagement' : '#leistungen'}>Baumanagement</a>
+          <a href={homeLink('#leistungen')}>Facility Management</a>
+          <a href={homeLink('#leistungen')}>Transport</a>
+        </div>
+        <div className="footer-column">
+          <h3>NAVIGATION</h3>
+          <a href={homeLink('#top')}>Start</a>
+          <a href={homeLink('#leistungen')}>Leistungen</a>
+          <a href={homeLink('#referenzen')}>Referenzen</a>
+          <a href={homeLink('#ueber-uns')}>Über BIG SAIF</a>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <span>© 2026 BIG SAIF</span>
+        <div>
+          <a href="#impressum">Impressum</a>
+          <a href="#datenschutz">Datenschutz</a>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+function BaumanagementPage() {
+  return (
+    <div className="site-shell baumanagement-page">
+      <SiteHeader servicePage />
+      <main>
+        <section className="baumanagement-hero" aria-label="Baumanagement">
+          <div className="baumanagement-editorial">
+            <div className="baumanagement-editorial-content">
+              <h1><span>BAU &amp;</span><span>RENOVIERUNG.</span></h1>
+              <p>Durchdachte Lösungen für Bau, Umbau und Renovierung.</p>
+              <a className="baumanagement-button" href="/#kontakt">PROJEKT ANFRAGEN <Arrow /></a>
+            </div>
+          </div>
+          <div className="baumanagement-logo-reveal">
+            <img className="baumanagement-hero-logo" src="/baumanagement-logo-transparent.png" alt="BIG SAIF Baumanagement" />
+          </div>
+        </section>
+
+        <section className="baumanagement-transition" aria-labelledby="service-areas-title">
+          <div>
+            <p>BAUMANAGEMENT</p>
+            <h2 id="service-areas-title">LEISTUNGSBEREICHE</h2>
+          </div>
+        </section>
+      </main>
+      <div className="baumanagement-footer-shell"><SiteFooter servicePage /></div>
+    </div>
+  )
+}
+
+function App() {
   const [aboutStageActive, setAboutStageActive] = useState(false)
   const aboutStageRef = useRef<HTMLDivElement>(null)
+  const isBaumanagementPage = window.location.pathname === '/baumanagement'
 
   useEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration
@@ -129,71 +235,11 @@ function App() {
     return () => observer.disconnect()
   }, [])
 
-  const closeMenu = () => {
-    setMenuOpen(false)
-  }
+  if (isBaumanagementPage) return <BaumanagementPage />
 
   return (
     <div className="site-shell">
-      <header className="site-header">
-        <a
-          className="brand"
-          href="#top"
-          aria-label="BIG SAIF Startseite"
-        >
-          <img
-            src={mainLogo}
-            alt="BIG SAIF"
-          />
-        </a>
-
-        <button
-          className="menu-toggle"
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="primary-navigation"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span>
-            {menuOpen ? 'Schließen' : 'Menü'}
-          </span>
-
-          <span
-            className="menu-icon"
-            aria-hidden="true"
-          >
-            <i />
-            <i />
-          </span>
-        </button>
-
-        <nav
-          id="primary-navigation"
-          className={`primary-navigation${menuOpen ? ' is-open' : ''}`}
-          aria-label="Hauptnavigation"
-        >
-          <div className="nav-links">
-            {navigation.map(([label, href]) => (
-              <a
-                key={href}
-                href={href}
-                onClick={closeMenu}
-              >
-                {label}
-              </a>
-            ))}
-          </div>
-
-          <a
-            className="header-cta"
-            href="#kontakt"
-            onClick={closeMenu}
-          >
-            Angebot anfragen
-            <Arrow />
-          </a>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <main id="top">
         <section
@@ -436,7 +482,7 @@ function App() {
 
                     <a
                       className="service-link"
-                      href={`#${service.id}`}
+                      href={service.id === 'leistung-bau' ? '/baumanagement' : `#${service.id}`}
                       aria-label={`Mehr über ${service.title.join(' ')} erfahren`}
                     >
                       Mehr erfahren
@@ -620,38 +666,7 @@ function App() {
 
             <div className="closing-signature" aria-hidden="true">BIG SAIF</div>
 
-            <footer className="site-footer">
-              <div className="footer-grid">
-                <div className="footer-brand">
-                  <p>BIG SAIF</p>
-                  <span>BAU. FACILITY. TRANSPORT.</span>
-                </div>
-
-                <div className="footer-column">
-                  <h3>LEISTUNGEN</h3>
-                  <a href="#leistungen">Baumanagement</a>
-                  <a href="#leistungen">Facility Management</a>
-                  <a href="#leistungen">Transport</a>
-                </div>
-
-                <div className="footer-column">
-                  <h3>NAVIGATION</h3>
-                  <a href="#top">Start</a>
-                  <a href="#leistungen">Leistungen</a>
-                  <a href="#referenzen">Referenzen</a>
-                  <a href="#ueber-uns">Über BIG SAIF</a>
-                </div>
-
-              </div>
-
-              <div className="footer-bottom">
-                <span>© 2026 BIG SAIF</span>
-                <div>
-                  <a href="#impressum">Impressum</a>
-                  <a href="#datenschutz">Datenschutz</a>
-                </div>
-              </div>
-            </footer>
+            <SiteFooter />
           </div>
         </section>
       </main>
