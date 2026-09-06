@@ -18,6 +18,8 @@ import transportImage from './assets/projects/transport.png'
 
 import './App.css'
 
+const applicationBase = import.meta.env.BASE_URL
+
 const navigation = [
   ['Leistungen', '#leistungen'],
   ['Referenzen', '#referenzen'],
@@ -373,12 +375,12 @@ function BaumanagementServiceAreas() {
 
 function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const links = navigation.map(([label, href]) => [label, servicePage ? `/${href}` : href])
+  const links = navigation.map(([label, href]) => [label, servicePage ? `${applicationBase}${href}` : href])
   const closeMenu = () => setMenuOpen(false)
 
   return (
     <header className="site-header">
-      <a className="brand" href={servicePage ? '/' : '#top'} aria-label="BIG SAIF Startseite">
+      <a className="brand" href={servicePage ? applicationBase : '#top'} aria-label="BIG SAIF Startseite">
         <img src={mainLogo} alt="BIG SAIF" />
       </a>
 
@@ -403,7 +405,7 @@ function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
             <a key={href} href={href} onClick={closeMenu}>{label}</a>
           ))}
         </div>
-        <a className="header-cta" href={servicePage ? '/#kontakt' : '#kontakt'} onClick={closeMenu}>
+        <a className="header-cta" href={servicePage ? `${applicationBase}#kontakt` : '#kontakt'} onClick={closeMenu}>
           Angebot anfragen
           <Arrow />
         </a>
@@ -413,7 +415,7 @@ function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
 }
 
 function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
-  const homeLink = (hash: string) => (servicePage ? `/${hash}` : hash)
+  const homeLink = (hash: string) => (servicePage ? `${applicationBase}${hash}` : hash)
 
   return (
     <footer className="site-footer">
@@ -424,7 +426,7 @@ function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
         </div>
         <div className="footer-column">
           <h3>LEISTUNGEN</h3>
-          <a href={servicePage ? '/baumanagement' : '#leistungen'}>Baumanagement</a>
+          <a href={servicePage ? `${applicationBase}baumanagement` : '#leistungen'}>Baumanagement</a>
           <a href={homeLink('#leistungen')}>Facility Management</a>
           <a href={homeLink('#leistungen')}>Transport</a>
         </div>
@@ -454,13 +456,13 @@ function BaumanagementPage() {
       <main>
         <section className="baumanagement-hero" aria-label="Baumanagement">
           <div className="baumanagement-logo-reveal">
-            <img className="baumanagement-hero-logo" src="/baumanagement-logo-transparent.png" alt="BIG SAIF Baumanagement" />
+            <img className="baumanagement-hero-logo" src={`${applicationBase}baumanagement-logo-transparent.png`} alt="BIG SAIF Baumanagement" />
           </div>
           <div className="baumanagement-editorial">
             <div className="baumanagement-editorial-content">
               <h1><span>BAU &amp;</span><span>RENOVIERUNG.</span></h1>
               <p>Durchdachte Lösungen für Bau, Umbau und Renovierung.</p>
-              <a className="baumanagement-button" href="/#kontakt">PROJEKT ANFRAGEN <Arrow /></a>
+              <a className="baumanagement-button" href={`${applicationBase}#kontakt`}>PROJEKT ANFRAGEN <Arrow /></a>
             </div>
           </div>
         </section>
@@ -476,7 +478,12 @@ function BaumanagementPage() {
 function App() {
   const [aboutStageActive, setAboutStageActive] = useState(false)
   const aboutStageRef = useRef<HTMLDivElement>(null)
-  const isBaumanagementPage = window.location.pathname === '/baumanagement'
+  const directPathname = window.location.pathname.startsWith(applicationBase)
+    ? `/${window.location.pathname.slice(applicationBase.length)}`.replace(/\/$/, '') || '/'
+    : window.location.pathname
+  const fallbackPathname = new URLSearchParams(window.location.search).get('p')
+  const applicationPathname = fallbackPathname ?? directPathname
+  const isBaumanagementPage = applicationPathname === '/baumanagement'
 
   useEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration
@@ -497,6 +504,12 @@ function App() {
       window.history.scrollRestoration = previousScrollRestoration
     }
   }, [])
+
+  useEffect(() => {
+    if (!fallbackPathname) return
+
+    window.history.replaceState(window.history.state, '', `${applicationBase}${fallbackPathname.replace(/^\//, '')}`)
+  }, [fallbackPathname])
 
   useEffect(() => {
     const stage = aboutStageRef.current
