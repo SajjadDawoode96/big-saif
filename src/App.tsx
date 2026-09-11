@@ -16,6 +16,7 @@ import buildingImage from './assets/projects/building.jpg'
 import facilityImage from './assets/projects/facility.jpg'
 import transportImage from './assets/projects/transport.png'
 import { baumanagementProjectGroups, type BaumanagementProjectComparison, type BaumanagementProjectGroup } from './data/baumanagementProjects'
+import { facilityProjectGroups, type FacilityProjectComparison } from './data/facilityProjects'
 
 import './App.css'
 
@@ -532,7 +533,7 @@ function BaumanagementPage({
   )
 }
 
-function FacilityManagementPage() {
+function FacilityProjectComparison({ project }: { project: FacilityProjectComparison }) {
   const [facilityReveal, setFacilityReveal] = useState(50)
   const facilityComparisonRef = useRef<HTMLDivElement>(null)
   const updateFacilityReveal = (clientX: number) => {
@@ -543,6 +544,40 @@ function FacilityManagementPage() {
   }
 
   return (
+    <div
+      className="facility-management-comparison"
+      ref={facilityComparisonRef}
+      role="slider"
+      tabIndex={0}
+      aria-label="Vorher-Nachher Vergleich"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(facilityReveal)}
+      onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); updateFacilityReveal(event.clientX) }}
+      onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) updateFacilityReveal(event.clientX) }}
+      onKeyDown={(event) => {
+        if (event.key === 'ArrowLeft') { event.preventDefault(); setFacilityReveal((value) => Math.max(0, value - 5)) }
+        if (event.key === 'ArrowRight') { event.preventDefault(); setFacilityReveal((value) => Math.min(100, value + 5)) }
+      }}
+    >
+      <img src={project.beforeImage} alt={project.altBefore} />
+      <div className="facility-management-comparison-after" style={{ clipPath: `inset(0 0 0 ${facilityReveal}%)` }}><img src={project.afterImage} alt={project.altAfter} /></div>
+      <div className="facility-management-comparison-divider" style={{ left: `${facilityReveal}%` }}><span /></div>
+      <small className="facility-management-comparison-before-label">VORHER</small><small className="facility-management-comparison-after-label">NACHHER</small>
+    </div>
+  )
+}
+
+function FacilityManagementPage({
+  onContactOpen,
+  onContactTriggerRef,
+}: {
+  onContactOpen: () => void
+  onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+}) {
+  const galleryGroups = facilityProjectGroups.length ? facilityProjectGroups : [[]]
+
+  return (
     <div className="site-shell facility-management-page">
       <SiteHeader servicePage />
       <main>
@@ -550,7 +585,17 @@ function FacilityManagementPage() {
           <div className="facility-management-editorial">
             <h1 id="facility-management-title"><span>SAUBERKEIT.</span><span>PFLEGE.</span><span>SERVICE.</span></h1>
             <p className="facility-management-intro">Professionelle Reinigung und Gebäudepflege für gewerbliche und private Bereiche.</p>
-            <a className="facility-management-button" href={`${applicationBase}#kontakt`}>SERVICE ANFRAGEN <Arrow /></a>
+            <a
+              ref={onContactTriggerRef}
+              className="facility-management-button"
+              href={`${applicationBase}#kontakt`}
+              onClick={(event) => {
+                event.preventDefault()
+                onContactOpen()
+              }}
+            >
+              SERVICE ANFRAGEN <Arrow />
+            </a>
           </div>
 
           <div className="facility-management-logo-stage">
@@ -642,32 +687,18 @@ function FacilityManagementPage() {
               <h2 id="facility-management-gallery-title"><span>SAUBERKEIT,</span><span>DIE MAN SIEHT.</span></h2>
               <span>Einblicke in unsere Arbeit im Bereich Reinigung und Gebäudepflege.</span>
             </header>
-            <div className="facility-management-gallery-grid" aria-label="Galerieentwicklung">
-              <figure className="facility-management-gallery-slot facility-management-gallery-slot-1">
-                <div
-                  className="facility-management-comparison"
-                  ref={facilityComparisonRef}
-                  role="slider"
-                  tabIndex={0}
-                  aria-label="Vorher-Nachher Vergleich"
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={Math.round(facilityReveal)}
-                  onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); updateFacilityReveal(event.clientX) }}
-                  onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) updateFacilityReveal(event.clientX) }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'ArrowLeft') { event.preventDefault(); setFacilityReveal((value) => Math.max(0, value - 5)) }
-                    if (event.key === 'ArrowRight') { event.preventDefault(); setFacilityReveal((value) => Math.min(100, value + 5)) }
-                  }}
-                >
-                  <img src={`${applicationBase}facility-before-01.png`} alt="Vorher: Reinigungsbereich" />
-                  <div className="facility-management-comparison-after" style={{ clipPath: `inset(0 0 0 ${facilityReveal}%)` }}><img src={`${applicationBase}facility-after-01.png`} alt="Nachher: gereinigter Bereich" /></div>
-                  <div className="facility-management-comparison-divider" style={{ left: `${facilityReveal}%` }}><span /></div>
-                  <small className="facility-management-comparison-before-label">VORHER</small><small className="facility-management-comparison-after-label">NACHHER</small>
-                </div>
-              </figure>
-              {[2, 3, 4, 5].map((slot) => <figure className={`facility-management-gallery-slot facility-management-gallery-slot-${slot}`} key={slot}><span>{String(slot).padStart(2, '0')}</span></figure>)}
-            </div>
+            {galleryGroups.map((group, groupIndex) => (
+              <div className="facility-management-gallery-grid" aria-label="Galerieentwicklung" key={`facility-gallery-group-${groupIndex + 1}`}>
+                {group.map((project, index) => {
+                  const slot = index + 1
+                  return <figure className={`facility-management-gallery-slot facility-management-gallery-slot-${slot}`} key={project.id}><FacilityProjectComparison project={project} /></figure>
+                })}
+                {Array.from({ length: Math.max(0, 5 - group.length) }, (_, index) => {
+                  const slot = group.length + index + 1
+                  return <figure className={`facility-management-gallery-slot facility-management-gallery-slot-${slot}`} key={`placeholder-${slot}`}><span>{String(slot).padStart(2, '0')}</span></figure>
+                })}
+              </div>
+            ))}
           </div>
         </section>
         <section className="facility-management-cta" aria-labelledby="facility-management-cta-title"><div className="facility-management-cta-inner"><h2 id="facility-management-cta-title"><span>BEREIT FÜR</span><span>EIN SAUBERES OBJEKT?</span></h2><div><p>Sprechen Sie mit uns über die passende Reinigung und Gebäudepflege für Ihr Objekt.</p><a href={`${applicationBase}#kontakt`}>SERVICE ANFRAGEN <Arrow /></a></div></div></section>
@@ -900,7 +931,17 @@ function App() {
       </>
     )
   }
-  if (isFacilityManagementPage) return <FacilityManagementPage />
+  if (isFacilityManagementPage) {
+    return (
+      <>
+        <FacilityManagementPage
+          onContactOpen={() => setContactModalOpen(true)}
+          onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+        />
+        {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+      </>
+    )
+  }
   if (isTransportPage) return <TransportPage />
 
   return (
