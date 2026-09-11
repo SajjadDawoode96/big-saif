@@ -741,9 +741,12 @@ h1 span:nth-child(3) {
 .service-panel {
   position: relative;
   min-width: 0;
+  display: block;
 
   color: var(--color-white);
   background: #181818;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .service-panel::before {
@@ -1026,8 +1029,8 @@ h1 span:nth-child(3) {
   width: calc(100% + 1px);
 }
 
-.service-link:hover span,
-.service-link:focus-visible span {
+.service-panel:hover .service-link span,
+.service-panel:focus-visible .service-link span {
   transform: translate(3px, -3px);
 }
 

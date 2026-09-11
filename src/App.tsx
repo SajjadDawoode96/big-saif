@@ -1129,10 +1129,18 @@ function App() {
 
             <div className="services-grid">
               {services.map((service) => (
-                <article
+                <a
                   id={service.id}
                   className="service-panel"
                   key={service.id}
+                  href={service.id === 'leistung-bau'
+                    ? `${applicationBase}baumanagement`
+                    : service.id === 'leistung-facility'
+                      ? `${applicationBase}facility-management`
+                      : service.id === 'leistung-transport'
+                        ? `${applicationBase}transport`
+                        : `#${service.id}`}
+                  aria-label={`Mehr über ${service.title.join(' ')} erfahren`}
                 >
                   <div className="service-image">
                     <img
@@ -1152,22 +1160,12 @@ function App() {
                   <div className="service-content">
                     <p>{service.description}</p>
 
-                    <a
-                      className="service-link"
-                      href={service.id === 'leistung-bau'
-                        ? `${applicationBase}baumanagement`
-                        : service.id === 'leistung-facility'
-                          ? `${applicationBase}facility-management`
-                          : service.id === 'leistung-transport'
-                            ? `${applicationBase}transport`
-                          : `#${service.id}`}
-                      aria-label={`Mehr über ${service.title.join(' ')} erfahren`}
-                    >
+                    <span className="service-link">
                       Mehr erfahren
                       <Arrow />
-                    </a>
+                    </span>
                   </div>
-                </article>
+                </a>
               ))}
             </div>
           </div>
@@ -1202,7 +1200,13 @@ function App() {
                 >
                   <a
                     className="project-link"
-                    href={`#${project.id}`}
+                    href={project.id === 'projekt-baumanagement'
+                      ? `${applicationBase}baumanagement`
+                      : project.id === 'projekt-facility-management'
+                        ? `${applicationBase}facility-management`
+                        : project.id === 'projekt-transport'
+                          ? `${applicationBase}transport`
+                          : `#${project.id}`}
                     aria-label={`${project.category}: Projekt ansehen`}
                   >
                     <img
