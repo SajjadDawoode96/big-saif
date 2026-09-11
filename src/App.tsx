@@ -708,7 +708,13 @@ function FacilityManagementPage({
   )
 }
 
-function TransportPage() {
+function TransportPage({
+  onContactOpen,
+  onContactTriggerRef,
+}: {
+  onContactOpen: () => void
+  onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+}) {
   return (
     <div className="site-shell transport-page">
       <SiteHeader servicePage />
@@ -718,7 +724,17 @@ function TransportPage() {
           <div className="transport-hero-content">
             <h1 id="transport-title"><span>SICHER.</span><span>PÜNKTLICH.</span><span>AM ZIEL.</span></h1>
             <p>Transport und Lieferung innerhalb Deutschlands.</p>
-            <a className="transport-hero-button" href={`${applicationBase}#kontakt`}>TRANSPORT ANFRAGEN <Arrow /></a>
+            <a
+              className="transport-hero-button"
+              href={`${applicationBase}#kontakt`}
+              onClick={(event) => {
+                event.preventDefault()
+                onContactTriggerRef(event.currentTarget)
+                onContactOpen()
+              }}
+            >
+              TRANSPORT ANFRAGEN <Arrow />
+            </a>
           </div>
           <div className="transport-hero-logo-stage"><img className="transport-hero-logo" src={`${applicationBase}transport-logo.png`} alt="BIG SAIF Transport" /></div>
         </section>
@@ -749,7 +765,7 @@ function TransportPage() {
                 <li><span className="transport-services-number">04</span><div><h3>TRANSPORT DEUTSCHLANDWEIT</h3><p>Zuverlässige Transporte zwischen Städten und Regionen in Deutschland.</p></div><span className="transport-services-arrow" aria-hidden="true">↗</span></li>
                 <li className="transport-services-more"><span className="transport-services-number">+</span><div><h3>UND VIELES MEHR.</h3><p>Individuelle Transportlösungen nach Bedarf. Kontaktieren Sie uns für Ihre Anfrage.</p></div></li>
               </ol>
-              <div className="transport-services-cta"><a href={`${applicationBase}#kontakt`}>TRANSPORT ANFRAGEN <Arrow /></a><p>Egal was Sie transportieren möchten —<br />wir bringen es sicher ans Ziel.</p></div>
+              <div className="transport-services-cta"><a href={`${applicationBase}#kontakt`} onClick={(event) => { event.preventDefault(); onContactTriggerRef(event.currentTarget); onContactOpen() }}>TRANSPORT ANFRAGEN <Arrow /></a><p>Egal was Sie transportieren möchten —<br />wir bringen es sicher ans Ziel.</p></div>
             </div>
           </div>
         </section>
@@ -821,7 +837,7 @@ function TransportPage() {
             </header>
             <div className="transport-contact-support">
               <p>Teilen Sie uns mit, was transportiert werden soll. Wir kümmern uns um den passenden Ablauf.</p>
-              <a className="transport-contact-button" href={`${applicationBase}#kontakt`}>TRANSPORT ANFRAGEN <Arrow /></a>
+              <a className="transport-contact-button" href={`${applicationBase}#kontakt`} onClick={(event) => { event.preventDefault(); onContactTriggerRef(event.currentTarget); onContactOpen() }}>TRANSPORT ANFRAGEN <Arrow /></a>
             </div>
           </div>
         </section>
@@ -942,7 +958,17 @@ function App() {
       </>
     )
   }
-  if (isTransportPage) return <TransportPage />
+  if (isTransportPage) {
+    return (
+      <>
+        <TransportPage
+          onContactOpen={() => setContactModalOpen(true)}
+          onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+        />
+        {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+      </>
+    )
+  }
 
   return (
     <div className="site-shell">
