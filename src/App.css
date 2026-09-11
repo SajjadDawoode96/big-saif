@@ -5257,3 +5257,336 @@ background: linear-gradient(
     z-index: 1;
   }
 }
+
+/* Homepage contact modal */
+.contact-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  background: rgb(0 0 0 / .78);
+  animation: contact-backdrop-enter 460ms ease-out both;
+}
+
+.contact-modal {
+  width: min(100%, 46rem);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  color: var(--color-off-white);
+  background: linear-gradient(145deg, #202020 0%, #151515 58%, #101010 100%);
+  border: 1px solid rgb(247 148 45 / .82);
+  border-radius: 8px;
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / .36);
+  animation: contact-modal-enter 480ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.contact-modal-header {
+  padding: clamp(2rem, 5vw, 3.4rem) clamp(2rem, 6vw, 4rem) 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.contact-modal h2,
+.contact-modal h3,
+.contact-modal-label {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.contact-modal h2 {
+  margin-top: 1.2rem;
+  font-size: clamp(2.8rem, 7.2vw, 4.55rem);
+  line-height: .87;
+  letter-spacing: -.075em;
+}
+
+.contact-modal h2 span { display: block; }
+.contact-modal h2 span:last-child { color: var(--color-orange); }
+.contact-modal-intro > p:last-child { max-width: 29rem; margin: 1.35rem 0 0; color: rgb(255 255 255 / .64); font-size: .95rem; line-height: 1.65; }
+.contact-modal-eyebrow { margin: 0; display: flex; align-items: center; gap: .75rem; color: var(--color-orange); font-size: .7rem; font-weight: 800; letter-spacing: .16em; }
+.contact-modal-eyebrow span { width: 2.25rem; height: 1px; background: var(--color-orange); }
+
+.contact-modal-close {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: rgb(255 255 255 / .72);
+  background: transparent;
+  cursor: pointer;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.contact-modal-close span {
+  font-size: 2rem;
+  font-weight: 200;
+  line-height: 1;
+}
+
+.contact-modal-close:hover {
+  color: var(--color-orange);
+  transform: rotate(8deg);
+}
+
+.contact-modal-close:focus-visible {
+  outline: 0;
+  color: var(--color-orange);
+  transform: rotate(8deg);
+}
+
+.contact-modal-details { padding: .35rem clamp(2rem, 6vw, 4rem) 0; display: grid; gap: .65rem; }
+
+.contact-modal-row {
+  min-height: 5.45rem;
+  padding: .9rem 1.05rem;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto 1rem;
+  align-items: center;
+  column-gap: 1rem;
+  border: 1px solid rgb(255 255 255 / .13);
+  border-radius: 5px;
+  color: var(--color-off-white);
+  background: rgb(255 255 255 / .025);
+  text-decoration: none;
+  animation: contact-row-enter 420ms cubic-bezier(.22, 1, .36, 1) both;
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.contact-modal-row:nth-child(1) { animation-delay: 100ms; }
+.contact-modal-row:nth-child(2) { animation-delay: 150ms; }
+.contact-modal-row:nth-child(3) { animation-delay: 200ms; }
+.contact-modal-row:nth-child(4) { animation-delay: 250ms; }
+.contact-modal-row:hover { border-color: rgb(247 148 45 / .65); background: rgb(255 255 255 / .06); }
+
+.contact-modal-icon { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; border: 1px solid rgb(255 255 255 / .17); border-radius: 50%; color: rgb(255 255 255 / .7); background: rgb(0 0 0 / .2); }
+.contact-modal-icon svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.contact-modal-icon-phone { color: var(--color-orange); border-color: rgb(247 148 45 / .42); }
+.contact-modal-icon-phone svg { fill: currentColor; stroke: none; }
+.contact-modal-icon-whatsapp { color: #5dbb73; border-color: rgb(93 187 115 / .38); }
+.contact-modal-icon-whatsapp svg { fill: currentColor; stroke: none; }
+
+.contact-modal-info { min-width: 0; display: grid; color: rgb(255 255 255 / .8); font-size: .86rem; line-height: 1.5; }
+.contact-modal-info a { width: fit-content; max-width: 100%; color: var(--color-off-white); overflow-wrap: anywhere; text-decoration: none; }
+.contact-modal-info a:hover { color: var(--color-orange); }
+.contact-modal h3,
+.contact-modal-label {
+  margin-bottom: .18rem;
+  color: var(--color-orange);
+  font-size: .68rem;
+  letter-spacing: .14em;
+}
+
+.contact-modal-action { color: rgb(255 255 255 / .48); font-size: .63rem; font-weight: 800; letter-spacing: .1em; white-space: nowrap; transition: color 200ms ease; }
+.contact-modal-arrow { color: var(--color-orange); font-size: 1.2rem; line-height: 1; transition: transform 200ms ease; }
+.contact-modal-row:hover .contact-modal-action { color: var(--color-off-white); }
+.contact-modal-row:hover .contact-modal-arrow { transform: translateX(4px); }
+
+.contact-modal-footer { margin: 2rem clamp(2rem, 6vw, 4rem) 0; padding: 1.35rem 0 clamp(1.75rem, 4vw, 2.5rem); display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; border-top: 1px solid rgb(255 255 255 / .16); }
+.contact-modal-footer div { display: grid; gap: .2rem; }
+.contact-modal-footer strong { font-family: var(--font-heading); font-size: 1rem; letter-spacing: -.03em; }
+.contact-modal-footer div span,
+.contact-modal-footer p { margin: 0; color: rgb(255 255 255 / .48); font-size: .61rem; font-weight: 800; letter-spacing: .12em; }
+.contact-modal-footer p { text-align: right; }
+.contact-modal-footer p span { color: var(--color-orange); }
+
+@keyframes contact-backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes contact-modal-enter { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes contact-row-enter { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 399px) {
+  .contact-modal-backdrop { padding: .75rem; }
+  .contact-modal { max-height: calc(100vh - 1.5rem); }
+  .contact-modal-header { padding: 1.25rem 1rem 1rem; }
+  .contact-modal-details { padding-inline: 1rem; }
+  .contact-modal h2 { font-size: 2.45rem; }
+  .contact-modal-row { grid-template-columns: 2.4rem minmax(0, 1fr) auto; min-height: 4.8rem; padding: .7rem; column-gap: .7rem; }
+  .contact-modal-action { display: none; }
+  .contact-modal-footer { margin-inline: 1rem; gap: .75rem; }
+}
+
+/* Mobile contact-modal composition: compact, touch-friendly, and internally scrollable. */
+@media (max-width: 699px) {
+  .contact-modal-backdrop {
+    padding: 12px;
+    align-items: center;
+  }
+
+  .contact-modal {
+    width: calc(100vw - 24px);
+    max-width: 34rem;
+    max-height: calc(100dvh - 24px);
+    border-radius: 7px;
+  }
+
+  .contact-modal-header {
+    padding: 1.35rem 1.1rem 1.1rem;
+    gap: .75rem;
+  }
+
+  .contact-modal-eyebrow { gap: .6rem; font-size: .64rem; }
+  .contact-modal-eyebrow span { width: 1.7rem; }
+
+  .contact-modal h2 {
+    margin-top: .9rem;
+    font-size: clamp(2.3rem, 12vw, 3.1rem);
+    line-height: .88;
+  }
+
+  .contact-modal-intro > p:last-child {
+    margin-top: 1rem;
+    font-size: .84rem;
+    line-height: 1.55;
+  }
+
+  .contact-modal-close {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: -.35rem -.5rem 0 0;
+  }
+
+  .contact-modal-close span { font-size: 2rem; }
+
+  .contact-modal-details {
+    padding: .2rem 1.1rem 0;
+    gap: .55rem;
+  }
+
+  .contact-modal-row {
+    min-height: 4.95rem;
+    padding: .7rem .75rem;
+    grid-template-columns: 2.55rem minmax(0, 1fr) 1rem;
+    column-gap: .75rem;
+    border-radius: 5px;
+  }
+
+  .contact-modal-phone-row { min-height: 5.5rem; }
+  .contact-modal-row:last-child { min-height: 5.6rem; }
+
+  .contact-modal-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .contact-modal-icon svg {
+    width: 1.08rem;
+    height: 1.08rem;
+  }
+
+  .contact-modal-info {
+    font-size: .83rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-modal h3,
+  .contact-modal-label {
+    margin-bottom: .14rem;
+    font-size: .62rem;
+  }
+
+  .contact-modal-action { display: none; }
+  .contact-modal-arrow { font-size: 1.15rem; }
+
+  .contact-modal-row:active,
+  .contact-modal-row:focus-visible {
+    border-color: rgb(247 148 45 / .65);
+    background: rgb(255 255 255 / .06);
+  }
+
+  .contact-modal-footer {
+    margin: 1.35rem 1.1rem 0;
+    padding: 1.15rem 0 1.4rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .8rem;
+  }
+
+  .contact-modal-footer strong { font-size: .95rem; }
+  .contact-modal-footer div span,
+  .contact-modal-footer p { font-size: .58rem; }
+  .contact-modal-footer p { text-align: left; }
+}
+
+/* Desktop scale and spacing refinement for the contact modal. */
+@media (min-width: 1100px) {
+  .contact-modal-backdrop { padding: 2.5rem; }
+
+  .contact-modal {
+    width: min(100%, 49rem);
+    max-height: calc(100vh - 5rem);
+  }
+
+  .contact-modal-header {
+    padding: 3.65rem 4.35rem 1.85rem;
+  }
+
+  .contact-modal-intro > p:last-child {
+    max-width: 32rem;
+    margin-top: 1.55rem;
+    font-size: 1.02rem;
+  }
+
+  .contact-modal-close {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: -.35rem -.5rem 0 0;
+  }
+
+  .contact-modal-close span { font-size: 2.2rem; }
+
+  .contact-modal-details {
+    padding: .5rem 4.35rem 0;
+    gap: .8rem;
+  }
+
+  .contact-modal-row {
+    min-height: 5.85rem;
+    padding: 1rem 1.2rem;
+    grid-template-columns: 3.25rem minmax(0, 1fr) auto 1.1rem;
+    column-gap: 1.15rem;
+  }
+
+  .contact-modal-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .contact-modal-icon svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .contact-modal-info { font-size: .96rem; }
+  .contact-modal h3,
+  .contact-modal-label { margin-bottom: .25rem; font-size: .72rem; }
+  .contact-modal-action { color: rgb(255 255 255 / .66); font-size: .69rem; }
+  .contact-modal-arrow { font-size: 1.35rem; }
+
+  .contact-modal-footer {
+    margin: 2.35rem 4.35rem 0;
+    padding: 1.65rem 0 2.65rem;
+  }
+
+  .contact-modal-footer strong { font-size: 1.1rem; }
+  .contact-modal-footer div span,
+  .contact-modal-footer p { font-size: .67rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-modal-backdrop,
+  .contact-modal,
+  .contact-modal-row { animation: none; }
+  .contact-modal-close,
+  .contact-modal-action,
+  .contact-modal-arrow,
+  .contact-modal-row { transition: none; }
+}

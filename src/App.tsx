@@ -86,6 +86,79 @@ const projects = [
 
 const Arrow = () => <span aria-hidden="true">↗</span>
 
+function ContactIcon({ type }: { type: 'phone' | 'whatsapp' | 'email' | 'address' }) {
+  if (type === 'phone') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.3 3.5 5.4 4.4c-.9.4-1.3 1.5-.9 2.4 2.1 5.2 6.1 9.2 11.3 11.3.9.4 2-.1 2.4-.9l.9-1.9-3.5-2.1-1.2 1.2c-2.2-1-3.9-2.7-4.9-4.9l1.2-1.2-2.1-3.5Z" /></svg>
+  if (type === 'whatsapp') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 4.5A10 10 0 0 0 4.2 16.7L3 21l4.4-1.1A10 10 0 1 0 19.4 4.5Zm-7.3 13.8a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-2.6.7.7-2.5-.2-.3a8.1 8.1 0 1 1 6.5 3.4Zm4.4-6.1c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.5.1-.2.2-.6.7-.7.8-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-1.9-1.2 7.1 7.1 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3.2-.4 0-.2-.1-.3-.1-.4l-.7-1.6c-.2-.4-.4-.3-.5-.3h-.5c-.2 0-.4.1-.6.3-.2.2-.8.7-.8 1.8s.8 2 1 2.2c.1.1 1.5 2.3 3.7 3.2.5.2 1 .4 1.3.5.6.2 1.1.2 1.5.1.5-.1 1.3-.5 1.5-1 .2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3Z" /></svg>
+  if (type === 'email') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="1" /><path d="m4.5 7 7.5 5.5L19.5 7" /></svg>
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.3 6-11A6 6 0 0 0 6 10c0 5.7 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></svg>
+}
+
+function ContactModal({ onClose }: { onClose: () => void }) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    closeButtonRef.current?.focus()
+  }, [])
+
+  return (
+    <div
+      className="contact-modal-backdrop"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          event.preventDefault()
+          onClose()
+        }
+      }}
+    >
+      <section className="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+        <div className="contact-modal-header">
+          <div className="contact-modal-intro">
+            <p className="contact-modal-eyebrow"><span aria-hidden="true" />KONTAKT</p>
+            <h2 id="contact-modal-title"><span>PROJEKT</span><span>ANFRAGEN</span></h2>
+            <p>Kontaktieren Sie uns direkt – wir freuen uns auf Ihr Projekt.</p>
+          </div>
+          <button ref={closeButtonRef} className="contact-modal-close" type="button" aria-label="Kontaktfenster schließen" onClick={onClose}>
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <div className="contact-modal-details">
+          <div className="contact-modal-row contact-modal-phone-row">
+            <span className="contact-modal-icon contact-modal-icon-phone"><ContactIcon type="phone" /></span>
+            <div className="contact-modal-info">
+              <h3>TELEFON</h3>
+              <a href="tel:+491791527341">01791527341</a>
+              <a href="tel:+4917647119724">017647119724</a>
+            </div>
+            <span className="contact-modal-action">JETZT ANRUFEN</span><span className="contact-modal-arrow" aria-hidden="true">→</span>
+          </div>
+          <a className="contact-modal-row" href="https://wa.me/491791527341" target="_blank" rel="noreferrer">
+            <span className="contact-modal-icon contact-modal-icon-whatsapp"><ContactIcon type="whatsapp" /></span>
+            <span className="contact-modal-info"><span className="contact-modal-label">WHATSAPP</span><span>01791527341</span></span>
+            <span className="contact-modal-action">CHAT STARTEN</span><span className="contact-modal-arrow" aria-hidden="true">→</span>
+          </a>
+          <a className="contact-modal-row" href="mailto:service@bigsaif.de">
+            <span className="contact-modal-icon"><ContactIcon type="email" /></span>
+            <span className="contact-modal-info"><span className="contact-modal-label">E-MAIL</span><span>service@bigsaif.de</span></span>
+            <span className="contact-modal-action">E-MAIL SENDEN</span><span className="contact-modal-arrow" aria-hidden="true">→</span>
+          </a>
+          <a className="contact-modal-row" href="https://www.google.com/maps/search/?api=1&query=Amselweg%2013%2C%2071679%20Asperg%2C%20Deutschland" target="_blank" rel="noreferrer">
+            <span className="contact-modal-icon"><ContactIcon type="address" /></span>
+            <span className="contact-modal-info"><span className="contact-modal-label">ADRESSE</span><span>Amselweg 13<br />71679 Asperg, Deutschland</span></span>
+            <span className="contact-modal-action">IN GOOGLE MAPS ÖFFNEN</span><span className="contact-modal-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <footer className="contact-modal-footer">
+          <div><strong>BIG SAIF</strong><span>BAU. FACILITY. TRANSPORT.</span></div>
+          <p>ALLES AUS <span>EINER HAND.</span></p>
+        </footer>
+      </section>
+    </div>
+  )
+}
+
 type BaumanagementProjectComparison = {
   id: string
   beforeImage: string
@@ -745,7 +818,9 @@ function TransportPage() {
 
 function App() {
   const [aboutStageActive, setAboutStageActive] = useState(false)
+  const [contactModalOpen, setContactModalOpen] = useState(false)
   const aboutStageRef = useRef<HTMLDivElement>(null)
+  const contactTriggerRef = useRef<HTMLButtonElement>(null)
   const directPathname = window.location.pathname.startsWith(applicationBase)
     ? `/${window.location.pathname.slice(applicationBase.length)}`.replace(/\/$/, '') || '/'
     : window.location.pathname
@@ -804,6 +879,31 @@ function App() {
 
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (!contactModalOpen) return
+
+    const contactTrigger = contactTriggerRef.current
+    const previousOverflow = document.body.style.overflow
+    const previousPaddingRight = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+
+    document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setContactModalOpen(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.body.style.paddingRight = previousPaddingRight
+      window.removeEventListener('keydown', handleKeyDown)
+      contactTrigger?.focus()
+    }
+  }, [contactModalOpen])
 
   if (isBaumanagementPage) return <BaumanagementPage />
   if (isFacilityManagementPage) return <FacilityManagementPage />
@@ -1234,10 +1334,15 @@ function App() {
                     konkreten Leistungsbedarf.
                   </p>
 
-                  <a className="closing-button" href="#kontakt">
+                  <button
+                    ref={contactTriggerRef}
+                    className="closing-button"
+                    type="button"
+                    onClick={() => setContactModalOpen(true)}
+                  >
                     PROJEKT ANFRAGEN
                     <Arrow />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1248,6 +1353,7 @@ function App() {
           </div>
         </section>
       </main>
+      {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
     </div>
   )
 }
