@@ -522,7 +522,13 @@ function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
   )
 }
 
-function BaumanagementPage() {
+function BaumanagementPage({
+  onContactOpen,
+  onContactTriggerRef,
+}: {
+  onContactOpen: () => void
+  onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+}) {
   return (
     <div className="site-shell baumanagement-page">
       <SiteHeader servicePage />
@@ -535,7 +541,17 @@ function BaumanagementPage() {
             <div className="baumanagement-editorial-content">
               <h1><span>BAU &amp;</span><span>RENOVIERUNG.</span></h1>
               <p>Durchdachte Lösungen für Bau, Umbau und Renovierung.</p>
-              <a className="baumanagement-button" href={`${applicationBase}#kontakt`}>PROJEKT ANFRAGEN <Arrow /></a>
+              <a
+                ref={onContactTriggerRef}
+                className="baumanagement-button"
+                href={`${applicationBase}#kontakt`}
+                onClick={(event) => {
+                  event.preventDefault()
+                  onContactOpen()
+                }}
+              >
+                PROJEKT ANFRAGEN <Arrow />
+              </a>
             </div>
           </div>
         </section>
@@ -820,7 +836,7 @@ function App() {
   const [aboutStageActive, setAboutStageActive] = useState(false)
   const [contactModalOpen, setContactModalOpen] = useState(false)
   const aboutStageRef = useRef<HTMLDivElement>(null)
-  const contactTriggerRef = useRef<HTMLButtonElement>(null)
+  const contactTriggerRef = useRef<HTMLElement | null>(null)
   const directPathname = window.location.pathname.startsWith(applicationBase)
     ? `/${window.location.pathname.slice(applicationBase.length)}`.replace(/\/$/, '') || '/'
     : window.location.pathname
@@ -905,7 +921,17 @@ function App() {
     }
   }, [contactModalOpen])
 
-  if (isBaumanagementPage) return <BaumanagementPage />
+  if (isBaumanagementPage) {
+    return (
+      <>
+        <BaumanagementPage
+          onContactOpen={() => setContactModalOpen(true)}
+          onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+        />
+        {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+      </>
+    )
+  }
   if (isFacilityManagementPage) return <FacilityManagementPage />
   if (isTransportPage) return <TransportPage />
 
@@ -1339,7 +1365,7 @@ function App() {
                   </p>
 
                   <button
-                    ref={contactTriggerRef}
+                    ref={(element) => { contactTriggerRef.current = element }}
                     className="closing-button"
                     type="button"
                     onClick={() => setContactModalOpen(true)}
