@@ -15,6 +15,7 @@ import constructionImage from './assets/projects/fac.png'
 import buildingImage from './assets/projects/building.jpg'
 import facilityImage from './assets/projects/facility.jpg'
 import transportImage from './assets/projects/transport.png'
+import { baumanagementProjectGroups, type BaumanagementProjectComparison, type BaumanagementProjectGroup } from './data/baumanagementProjects'
 
 import './App.css'
 
@@ -159,39 +160,6 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   )
 }
 
-type BaumanagementProjectComparison = {
-  id: string
-  beforeImage: string
-  afterImage: string
-  title?: string
-  description?: string
-  altBefore: string
-  altAfter: string
-}
-
-const baumanagementProjectGroups: { id: string; projects: BaumanagementProjectComparison[] }[] = [
-  {
-    id: 'project-group-1',
-    projects: [
-      { id: 'group-1-project-1', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-1-project-2', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-1-project-3', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-1-project-4', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-1-project-5', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-    ],
-  },
-  {
-    id: 'project-group-2',
-    projects: [
-      { id: 'group-2-project-1', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-2-project-2', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-2-project-3', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-2-project-4', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-      { id: 'group-2-project-5', beforeImage: baumanagementBackground, afterImage: baumanagementBackground, altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich', altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich' },
-    ],
-  },
-]
-
 const baumanagementServiceAreas = [
   {
     number: '01',
@@ -317,7 +285,7 @@ function BeforeAfterComparison({
   )
 }
 
-function BaumanagementProjectGroup({ group, groupNumber }: { group: (typeof baumanagementProjectGroups)[number]; groupNumber: number }) {
+function BaumanagementProjectGroup({ group, groupNumber }: { group: BaumanagementProjectGroup; groupNumber: number }) {
   const initialProjectIndex = Math.min(1, group.projects.length - 1)
   const [activeIndex, setActiveIndex] = useState(initialProjectIndex)
   const [comparisonPositions, setComparisonPositions] = useState(() => group.projects.map(() => 50))
