@@ -96,11 +96,34 @@ function ContactIcon({ type }: { type: 'phone' | 'whatsapp' | 'email' | 'address
 }
 
 function ContactModal({ onClose }: { onClose: () => void }) {
+  const modalRef = useRef<HTMLElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     closeButtonRef.current?.focus()
   }, [])
+
+  const trapFocus = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Tab') return
+
+    const focusableElements = Array.from(
+      modalRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ) ?? [],
+    ).filter((element) => !element.hasAttribute('hidden'))
+    const firstFocusableElement = focusableElements[0]
+    const lastFocusableElement = focusableElements[focusableElements.length - 1]
+
+    if (!firstFocusableElement || !lastFocusableElement) return
+
+    if (event.shiftKey && document.activeElement === firstFocusableElement) {
+      event.preventDefault()
+      lastFocusableElement.focus()
+    } else if (!event.shiftKey && document.activeElement === lastFocusableElement) {
+      event.preventDefault()
+      firstFocusableElement.focus()
+    }
+  }
 
   return (
     <div
@@ -113,7 +136,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
         }
       }}
     >
-      <section className="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+      <section ref={modalRef} className="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" onKeyDown={trapFocus}>
         <div className="contact-modal-header">
           <div className="contact-modal-intro">
             <p className="contact-modal-eyebrow"><span aria-hidden="true" />KONTAKT</p>
@@ -415,7 +438,15 @@ function BaumanagementServiceAreas() {
   )
 }
 
-function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
+function SiteHeader({
+  servicePage = false,
+  onContactOpen,
+  onContactTriggerRef,
+}: {
+  servicePage?: boolean
+  onContactOpen?: () => void
+  onContactTriggerRef?: (element: HTMLAnchorElement | null) => void
+}) {
   const [menuOpen, setMenuOpen] = useState(false)
   const links = navigation.map(([label, href]) => [label, servicePage ? `${applicationBase}${href}` : href])
   const closeMenu = () => setMenuOpen(false)
@@ -447,7 +478,19 @@ function SiteHeader({ servicePage = false }: { servicePage?: boolean }) {
             <a key={href} href={href} onClick={closeMenu}>{label}</a>
           ))}
         </div>
-        <a className="header-cta" href={servicePage ? `${applicationBase}#kontakt` : '#kontakt'} onClick={closeMenu}>
+        <a
+          className="header-cta"
+          href={servicePage ? `${applicationBase}#kontakt` : '#kontakt'}
+          onClick={(event) => {
+            if (!servicePage || !onContactOpen || !onContactTriggerRef) {
+              closeMenu()
+              return
+            }
+            event.preventDefault()
+            onContactTriggerRef(event.currentTarget)
+            onContactOpen()
+          }}
+        >
           Angebot anfragen
           <Arrow />
         </a>
@@ -468,7 +511,7 @@ function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
         </div>
         <div className="footer-column">
           <h3>LEISTUNGEN</h3>
-          <a href={servicePage ? `${applicationBase}baumanagement` : '#leistungen'}>Baumanagement</a>
+          <a href={`${applicationBase}baumanagement`}>Baumanagement</a>
           <a href={`${applicationBase}facility-management`}>Facility Management</a>
           <a href={`${applicationBase}transport`}>Transport</a>
         </div>
@@ -500,7 +543,7 @@ function BaumanagementPage({
 }) {
   return (
     <div className="site-shell baumanagement-page">
-      <SiteHeader servicePage />
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
       <main>
         <section className="baumanagement-hero" aria-label="Baumanagement">
           <div className="baumanagement-logo-reveal">
@@ -511,11 +554,11 @@ function BaumanagementPage({
               <h1><span>BAU &amp;</span><span>RENOVIERUNG.</span></h1>
               <p>Durchdachte Lösungen für Bau, Umbau und Renovierung.</p>
               <a
-                ref={onContactTriggerRef}
                 className="baumanagement-button"
                 href={`${applicationBase}#kontakt`}
                 onClick={(event) => {
                   event.preventDefault()
+                  onContactTriggerRef(event.currentTarget)
                   onContactOpen()
                 }}
               >
@@ -579,18 +622,18 @@ function FacilityManagementPage({
 
   return (
     <div className="site-shell facility-management-page">
-      <SiteHeader servicePage />
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
       <main>
         <section className="facility-management-hero" aria-labelledby="facility-management-title">
           <div className="facility-management-editorial">
             <h1 id="facility-management-title"><span>SAUBERKEIT.</span><span>PFLEGE.</span><span>SERVICE.</span></h1>
             <p className="facility-management-intro">Professionelle Reinigung und Gebäudepflege für gewerbliche und private Bereiche.</p>
             <a
-              ref={onContactTriggerRef}
               className="facility-management-button"
               href={`${applicationBase}#kontakt`}
               onClick={(event) => {
                 event.preventDefault()
+                onContactTriggerRef(event.currentTarget)
                 onContactOpen()
               }}
             >
@@ -701,7 +744,7 @@ function FacilityManagementPage({
             ))}
           </div>
         </section>
-        <section className="facility-management-cta" aria-labelledby="facility-management-cta-title"><div className="facility-management-cta-inner"><h2 id="facility-management-cta-title"><span>BEREIT FÜR</span><span>EIN SAUBERES OBJEKT?</span></h2><div><p>Sprechen Sie mit uns über die passende Reinigung und Gebäudepflege für Ihr Objekt.</p><a href={`${applicationBase}#kontakt`}>SERVICE ANFRAGEN <Arrow /></a></div></div></section>
+        <section className="facility-management-cta" aria-labelledby="facility-management-cta-title"><div className="facility-management-cta-inner"><h2 id="facility-management-cta-title"><span>BEREIT FÜR</span><span>EIN SAUBERES OBJEKT?</span></h2><div><p>Sprechen Sie mit uns über die passende Reinigung und Gebäudepflege für Ihr Objekt.</p><a href={`${applicationBase}#kontakt`} onClick={(event) => { event.preventDefault(); onContactTriggerRef(event.currentTarget); onContactOpen() }}>SERVICE ANFRAGEN <Arrow /></a></div></div></section>
       </main>
       <SiteFooter servicePage />
     </div>
@@ -717,7 +760,7 @@ function TransportPage({
 }) {
   return (
     <div className="site-shell transport-page">
-      <SiteHeader servicePage />
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
       <main>
         <section className="transport-hero" aria-labelledby="transport-title">
           <img className="transport-hero-artwork" src={`${applicationBase}transport-hero-bg.png`} alt="" aria-hidden="true" />
