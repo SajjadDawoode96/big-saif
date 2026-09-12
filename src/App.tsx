@@ -10,8 +10,21 @@ import transportBackground from './assets/services/transport-bg.jpg'
 import baumanagementProject from './assets/projects2/BAUMANAGEMENT.png'
 import facilityManagementProject from './assets/projects2/FACILITY MANAGEMENT.png'
 import transportProject from './assets/projects2/TRANSPORT.png'
+import baumanagementProject480 from './assets/projects2/baumanagement-480.webp'
+import baumanagementProject768 from './assets/projects2/baumanagement-768.webp'
+import baumanagementProject960 from './assets/projects2/baumanagement-960.webp'
+import baumanagementProject1440 from './assets/projects2/baumanagement-1440.webp'
+import facilityManagementProject480 from './assets/projects2/facility-management-480.webp'
+import facilityManagementProject768 from './assets/projects2/facility-management-768.webp'
+import facilityManagementProject960 from './assets/projects2/facility-management-960.webp'
+import transportProject480 from './assets/projects2/transport-480.webp'
+import transportProject768 from './assets/projects2/transport-768.webp'
+import transportProject960 from './assets/projects2/transport-960.webp'
 
 import constructionImage from './assets/projects/fac.png'
+import constructionImage480 from './assets/projects/fac-480.webp'
+import constructionImage768 from './assets/projects/fac-768.webp'
+import constructionImage960 from './assets/projects/fac-960.webp'
 import buildingImage from './assets/projects/building.jpg'
 import facilityImage from './assets/projects/facility.jpg'
 import transportImage from './assets/projects/transport.png'
@@ -66,6 +79,8 @@ const projects = [
     descriptor: 'Bau & Renovierung',
     image: baumanagementProject,
     imageAlt: 'BIG SAIF Team bei Bau- und Renovierungsarbeiten',
+    webpSources: `${baumanagementProject480} 480w, ${baumanagementProject768} 768w, ${baumanagementProject960} 960w, ${baumanagementProject1440} 1440w`,
+    imageSizes: '(max-width: 650px) 350px, (max-width: 900px) 691px, (max-width: 1439px) 774px, 873px',
     featured: true,
   },
   {
@@ -74,6 +89,8 @@ const projects = [
     descriptor: 'Reinigung & Gebäudepflege',
     image: facilityManagementProject,
     imageAlt: 'BIG SAIF Team bei der professionellen Gebäudereinigung',
+    webpSources: `${facilityManagementProject480} 480w, ${facilityManagementProject768} 768w, ${facilityManagementProject960} 960w`,
+    imageSizes: '(max-width: 650px) 350px, (max-width: 900px) 691px, (max-width: 1439px) 387px, 436px',
     featured: false,
   },
   {
@@ -82,6 +99,8 @@ const projects = [
     descriptor: 'Transport & Lieferung',
     image: transportProject,
     imageAlt: 'BIG SAIF Transporter bei einer Lieferung',
+    webpSources: `${transportProject480} 480w, ${transportProject768} 768w, ${transportProject960} 960w`,
+    imageSizes: '(max-width: 650px) 350px, (max-width: 900px) 691px, (max-width: 1439px) 387px, 436px',
     featured: false,
   },
 ]
@@ -1184,10 +1203,17 @@ function App() {
               </div>
 
               <div className="project-frame frame-secondary">
-                <img
-                  src={constructionImage}
-                  alt="BIG SAIF Gebäudemanagement"
-                />
+                <picture style={{ display: 'block', width: '100%', height: '100%' }}>
+                  <source
+                    type="image/webp"
+                    srcSet={`${constructionImage480} 480w, ${constructionImage768} 768w, ${constructionImage960} 960w`}
+                    sizes="(max-width: 650px) 263px, (max-width: 820px) 465px, (max-width: 1100px) 416px, 473px"
+                  />
+                  <img
+                    src={constructionImage}
+                    alt="BIG SAIF Gebäudemanagement"
+                  />
+                </picture>
               </div>
 
               <div className="project-frame frame-tertiary">
@@ -1315,11 +1341,14 @@ function App() {
                           : `#${project.id}`}
                     aria-label={`${project.category}: Projekt ansehen`}
                   >
-                    <img
-                      src={project.image}
-                      alt={project.imageAlt}
-                      loading="lazy"
-                    />
+                    <picture style={{ display: 'block', width: '100%', height: '100%' }}>
+                      <source type="image/webp" srcSet={project.webpSources} sizes={project.imageSizes} />
+                      <img
+                        src={project.image}
+                        alt={project.imageAlt}
+                        loading="lazy"
+                      />
+                    </picture>
 
                     <span className="project-overlay" aria-hidden="true" />
 
