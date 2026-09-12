@@ -4576,6 +4576,15 @@ background: linear-gradient(
     font-size: clamp(2.65rem, 13vw, 3.3rem);
   }
 
+  .hero-copy h1 span:nth-child(3) {
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.96);
+  }
+
+  .services-intro h2 span:last-child,
+  .projects-intro h2 span:last-child {
+    -webkit-text-stroke: 1.4px rgba(255, 255, 255, 0.94);
+  }
+
   .services-inner,
   .projects-inner {
     padding-top: var(--section-space);
