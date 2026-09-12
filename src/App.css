@@ -330,12 +330,12 @@ h1 span:nth-child(2) {
   color: var(--color-orange);
 }
 
-h1 span:nth-child(3) {
+.hero-copy h1 span:nth-child(3) {
   font-size: 0.92em;
-
-  color: transparent;
-
-  -webkit-text-stroke: 1.25px rgba(255, 255, 255, 0.9);
+  font-family: var(--font-accent);
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 700;
+  letter-spacing: 0.005em;
 }
 
 .hero-intro {
@@ -697,9 +697,10 @@ h1 span:nth-child(3) {
 }
 
 .services-intro h2 span:last-child {
-  color: transparent;
-
-  -webkit-text-stroke: 1.15px rgba(255, 255, 255, 0.86);
+  font-family: var(--font-accent);
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .services-summary {
@@ -1177,8 +1178,10 @@ h1 span:nth-child(3) {
   }
 
   .projects-intro h2 span:last-child {
-    color: transparent;
-    -webkit-text-stroke: 1.15px rgba(255, 255, 255, 0.86);
+    font-family: var(--font-accent);
+    color: rgba(255, 255, 255, 0.62);
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .projects-summary {
@@ -1340,9 +1343,10 @@ h1 span:nth-child(3) {
   }
 
   .projects-intro h2 span:last-child {
-    color: transparent;
-
-    -webkit-text-stroke: 1.15px rgba(255, 255, 255, 0.86);
+    font-family: var(--font-accent);
+    color: rgba(255, 255, 255, 0.62);
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .projects-summary {
@@ -2688,8 +2692,19 @@ h1 span:nth-child(3) {
 }
 
 .facility-management-editorial h1 span:nth-child(3) {
+  font-size: 0.92em;
+  font-family: var(--font-accent);
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 700;
+  letter-spacing: 0.005em;
+}
+
+/* Preserve the Transport hero's existing third-line treatment; it is outside
+   the former-outline redesign scope. */
+.transport-hero h1 span:nth-child(3) {
+  font-size: 0.92em;
   color: transparent;
-  -webkit-text-stroke: 1.35px rgba(255, 255, 255, 0.94);
+  -webkit-text-stroke: 1.25px rgba(255, 255, 255, 0.9);
 }
 
 .facility-management-intro {
@@ -4574,19 +4589,6 @@ background: linear-gradient(
 
   .hero-copy h1 {
     font-size: clamp(2.65rem, 13vw, 3.3rem);
-  }
-
-  .hero-copy h1 span:nth-child(3) {
-    color: rgba(255, 255, 255, 0.18);
-    letter-spacing: 0.01em;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.82);
-  }
-
-  .services-intro h2 span:last-child,
-  .projects-intro h2 span:last-child {
-    color: rgba(255, 255, 255, 0.18);
-    letter-spacing: 0;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.82);
   }
 
   .services-inner,
