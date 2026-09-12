@@ -1,12 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 
 import mainLogo from './assets/brand/LOGO BIG SAIF.png'
+import mainLogo320 from './assets/brand/LOGO-BIG-SAIF-320.webp'
+import mainLogo480 from './assets/brand/LOGO-BIG-SAIF-480.webp'
+import mainLogo768 from './assets/brand/LOGO-BIG-SAIF-768.webp'
 import baumanagementLogo from './assets/brand/BAUMANAGEMENT.png'
 import facilityManagementLogo from './assets/brand/FACILITY MANAGEMENT.png'
 import transportLogo from './assets/brand/TRANSPORT.png'
+import baumanagementLogo480 from './assets/brand/baumanagement-logo-480.webp'
+import facilityManagementLogo480 from './assets/brand/facility-management-logo-480.webp'
+import transportLogo480 from './assets/brand/transport-logo-480.webp'
 import baumanagementBackground from './assets/services/baumanagement-bg.jpg'
 import facilityManagementBackground from './assets/services/facility-management-bg.jpg'
 import transportBackground from './assets/services/transport-bg.jpg'
+import baumanagementBackground480 from './assets/services/baumanagement-bg-480.webp'
+import baumanagementBackground960 from './assets/services/baumanagement-bg-960.webp'
+import facilityManagementBackground480 from './assets/services/facility-management-bg-480.webp'
+import facilityManagementBackground768 from './assets/services/facility-management-bg-768.webp'
+import transportBackground480 from './assets/services/transport-bg-480.webp'
+import transportBackground768 from './assets/services/transport-bg-768.webp'
 import baumanagementProject from './assets/projects2/BAUMANAGEMENT.png'
 import facilityManagementProject from './assets/projects2/FACILITY MANAGEMENT.png'
 import transportProject from './assets/projects2/TRANSPORT.png'
@@ -26,8 +38,13 @@ import constructionImage480 from './assets/projects/fac-480.webp'
 import constructionImage768 from './assets/projects/fac-768.webp'
 import constructionImage960 from './assets/projects/fac-960.webp'
 import buildingImage from './assets/projects/building.jpg'
+import buildingImage480 from './assets/projects/building-480.webp'
+import buildingImage960 from './assets/projects/building-960.webp'
 import facilityImage from './assets/projects/facility.jpg'
 import transportImage from './assets/projects/transport.png'
+import transportImage640 from './assets/projects/transport-640.webp'
+import transportImage960 from './assets/projects/transport-960.webp'
+import transportImage1440 from './assets/projects/transport-1440.webp'
 import { baumanagementProjectGroups, type BaumanagementProjectComparison, type BaumanagementProjectGroup } from './data/baumanagementProjects'
 import { facilityProjectGroups, type FacilityProjectComparison } from './data/facilityProjects'
 
@@ -49,8 +66,10 @@ const services = [
     description:
       'Durchdachte Leistungen für Bau-, Umbau- und Renovierungsprojekte – koordiniert und präzise umgesetzt.',
     brandLogo: baumanagementLogo,
+    brandLogoWebp: baumanagementLogo480,
     brandLogoAlt: 'BIG SAIF Baumanagement',
     backgroundImage: baumanagementBackground,
+    backgroundWebpSources: `${baumanagementBackground480} 480w, ${baumanagementBackground960} 960w`,
   },
   {
     id: 'leistung-facility',
@@ -58,8 +77,10 @@ const services = [
     description:
       'Professionelle Reinigung und sorgfältige Gebäudepflege für dauerhaft gepflegte Innen- und Außenbereiche.',
     brandLogo: facilityManagementLogo,
+    brandLogoWebp: facilityManagementLogo480,
     brandLogoAlt: 'BIG SAIF Facility Management',
     backgroundImage: facilityManagementBackground,
+    backgroundWebpSources: `${facilityManagementBackground480} 480w, ${facilityManagementBackground768} 768w`,
   },
   {
     id: 'leistung-transport',
@@ -67,8 +88,10 @@ const services = [
     description:
       'Verlässliche Transport- und Lieferleistungen für planbare Abläufe und eine sorgfältige Abwicklung.',
     brandLogo: transportLogo,
+    brandLogoWebp: transportLogo480,
     brandLogoAlt: 'BIG SAIF Transport',
     backgroundImage: transportBackground,
+    backgroundWebpSources: `${transportBackground480} 480w, ${transportBackground768} 768w`,
   },
 ]
 
@@ -303,9 +326,15 @@ function BeforeAfterComparison({
       }}
       onPointerCancel={() => onPositionChange(positionRef.current)}
     >
-      <img className="baumanagement-comparison-image" src={project.beforeImage} alt={project.altBefore} loading="lazy" />
+      <picture style={{ display: 'contents' }}>
+        <source type="image/webp" srcSet={project.beforeImage} />
+        <img className="baumanagement-comparison-image" src={project.beforeFallbackImage} alt={project.altBefore} loading="lazy" decoding="async" />
+      </picture>
       <div ref={afterRef} className="baumanagement-comparison-after" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
-        <img className="baumanagement-comparison-image" src={project.afterImage} alt={project.altAfter} loading="lazy" />
+        <picture style={{ display: 'contents' }}>
+          <source type="image/webp" srcSet={project.afterImage} />
+          <img className="baumanagement-comparison-image" src={project.afterFallbackImage} alt={project.altAfter} loading="lazy" decoding="async" />
+        </picture>
       </div>
       <span className="baumanagement-comparison-label baumanagement-comparison-label-before">VORHER</span>
       <span className="baumanagement-comparison-label baumanagement-comparison-label-after">NACHHER</span>
@@ -473,7 +502,14 @@ function SiteHeader({
   return (
     <header className="site-header">
       <a className="brand" href={servicePage ? applicationBase : '#top'} aria-label="BIG SAIF Startseite">
-        <img src={mainLogo} alt="BIG SAIF" />
+        <picture style={{ display: 'contents' }}>
+          <source
+            type="image/webp"
+            srcSet={`${mainLogo320} 320w, ${mainLogo480} 480w, ${mainLogo768} 768w`}
+            sizes="(max-width: 650px) 92px, 134px"
+          />
+          <img src={mainLogo} alt="BIG SAIF" />
+        </picture>
       </a>
 
       <button
@@ -566,7 +602,10 @@ function BaumanagementPage({
       <main>
         <section className="baumanagement-hero" aria-label="Baumanagement">
           <div className="baumanagement-logo-reveal">
-            <img className="baumanagement-hero-logo" src={`${applicationBase}baumanagement-logo-transparent.png`} alt="BIG SAIF Baumanagement" />
+            <picture style={{ display: 'contents' }}>
+              <source type="image/webp" srcSet={`${applicationBase}baumanagement-logo-480.webp 480w, ${applicationBase}baumanagement-logo-768.webp 768w, ${applicationBase}baumanagement-logo-1280.webp 1280w`} sizes="(max-width: 500px) calc(100vw - 2rem), (max-width: 900px) 58vw, 40rem" />
+              <img className="baumanagement-hero-logo" src={`${applicationBase}baumanagement-logo-transparent.png`} alt="BIG SAIF Baumanagement" />
+            </picture>
           </div>
           <div className="baumanagement-editorial">
             <div className="baumanagement-editorial-content">
@@ -622,8 +661,11 @@ function FacilityProjectComparison({ project }: { project: FacilityProjectCompar
         if (event.key === 'ArrowRight') { event.preventDefault(); setFacilityReveal((value) => Math.min(100, value + 5)) }
       }}
     >
-      <img src={project.beforeImage} alt={project.altBefore} loading="lazy" />
-      <div className="facility-management-comparison-after" style={{ clipPath: `inset(0 0 0 ${facilityReveal}%)` }}><img src={project.afterImage} alt={project.altAfter} loading="lazy" /></div>
+      <picture style={{ display: 'contents' }}>
+        <source type="image/webp" srcSet={project.beforeImage} />
+        <img src={project.beforeFallbackImage} alt={project.altBefore} loading="lazy" decoding="async" />
+      </picture>
+      <div className="facility-management-comparison-after" style={{ clipPath: `inset(0 0 0 ${facilityReveal}%)` }}><picture style={{ display: 'contents' }}><source type="image/webp" srcSet={project.afterImage} /><img src={project.afterFallbackImage} alt={project.altAfter} loading="lazy" decoding="async" /></picture></div>
       <div className="facility-management-comparison-divider" style={{ left: `${facilityReveal}%` }}><span /></div>
       <small className="facility-management-comparison-before-label">VORHER</small><small className="facility-management-comparison-after-label">NACHHER</small>
     </div>
@@ -661,7 +703,10 @@ function FacilityManagementPage({
           </div>
 
           <div className="facility-management-logo-stage">
-            <img src={`${applicationBase}facility-management-logo.png`} alt="BIG SAIF Facility Management" />
+            <picture style={{ display: 'contents' }}>
+              <source type="image/webp" srcSet={`${applicationBase}facility-management-logo-320.webp 320w, ${applicationBase}facility-management-logo-480.webp 480w, ${applicationBase}facility-management-logo-768.webp 768w`} sizes="(max-width: 699px) min(16rem, 65vw), (max-width: 799px) 21rem, (max-width: 1099px) 24rem, 31rem" />
+              <img src={`${applicationBase}facility-management-logo.png`} alt="BIG SAIF Facility Management" />
+            </picture>
           </div>
 
         </section>
@@ -782,7 +827,10 @@ function TransportPage({
       <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
       <main>
         <section className="transport-hero" aria-labelledby="transport-title">
-          <img className="transport-hero-artwork" src={`${applicationBase}transport-hero-bg.png`} alt="" aria-hidden="true" />
+          <picture style={{ display: 'contents' }}>
+            <source type="image/webp" srcSet={`${applicationBase}transport-hero-bg-640.webp 640w, ${applicationBase}transport-hero-bg-960.webp 960w, ${applicationBase}transport-hero-bg-1440.webp 1440w`} sizes="100vw" />
+            <img className="transport-hero-artwork" src={`${applicationBase}transport-hero-bg.png`} alt="" aria-hidden="true" />
+          </picture>
           <div className="transport-hero-content">
             <h1 id="transport-title"><span>SICHER.</span><span>PÜNKTLICH.</span><span>AM ZIEL.</span></h1>
             <p>Transport und Lieferung innerhalb Deutschlands.</p>
@@ -798,7 +846,7 @@ function TransportPage({
               TRANSPORT ANFRAGEN <Arrow />
             </a>
           </div>
-          <div className="transport-hero-logo-stage"><img className="transport-hero-logo" src={`${applicationBase}transport-logo.png`} alt="BIG SAIF Transport" /></div>
+          <div className="transport-hero-logo-stage"><picture style={{ display: 'contents' }}><source type="image/webp" srcSet={`${applicationBase}transport-logo-320.webp 320w, ${applicationBase}transport-logo-480.webp 480w, ${applicationBase}transport-logo-768.webp 768w`} sizes="(max-width: 699px) min(10.5rem, 50vw), (max-width: 1099px) 28vw, 34vw" /><img className="transport-hero-logo" src={`${applicationBase}transport-logo.png`} alt="BIG SAIF Transport" /></picture></div>
         </section>
         <section className="transport-overview" aria-labelledby="transport-overview-title">
           <div className="transport-overview-inner">
@@ -814,7 +862,10 @@ function TransportPage({
           </div>
         </section>
         <section className="transport-services" aria-labelledby="transport-services-title">
-          <img className="transport-services-artwork" src={`${applicationBase}transport-services-bg.png`} alt="BIG SAIF Transport vehicle on a highway at nightfall" />
+          <picture style={{ display: 'contents' }}>
+            <source type="image/webp" srcSet={`${applicationBase}transport-services-bg-640.webp 640w, ${applicationBase}transport-services-bg-960.webp 960w, ${applicationBase}transport-services-bg-1440.webp 1440w`} sizes="100vw" />
+            <img className="transport-services-artwork" src={`${applicationBase}transport-services-bg.png`} alt="BIG SAIF Transport vehicle on a highway at nightfall" loading="lazy" decoding="async" />
+          </picture>
           <div className="transport-services-inner">
             <div className="transport-services-content">
               <p className="transport-services-eyebrow">UNSERE LEISTUNGEN</p>
@@ -1054,10 +1105,17 @@ function App() {
                   className="hero-brand"
                   aria-label="BIG SAIF"
                 >
-                  <img
-                    src={mainLogo}
-                    alt="BIG SAIF"
-                  />
+                  <picture style={{ display: 'contents' }}>
+                    <source
+                      type="image/webp"
+                      srcSet={`${mainLogo320} 320w, ${mainLogo480} 480w, ${mainLogo768} 768w`}
+                      sizes="(max-width: 650px) 154px, (max-width: 820px) 194px, (max-width: 1143px) 240px, (max-width: 1571px) 21vw, 330px"
+                    />
+                    <img
+                      src={mainLogo}
+                      alt="BIG SAIF"
+                    />
+                  </picture>
                 </div>
 
                 <span
@@ -1196,10 +1254,17 @@ function App() {
               </svg>
 
               <div className="project-frame frame-primary">
-                <img
-                  src={buildingImage}
-                  alt="BIG SAIF Bau und Renovierung"
-                />
+                <picture style={{ display: 'block', width: '100%', height: '100%' }}>
+                  <source
+                    type="image/webp"
+                    srcSet={`${buildingImage480} 480w, ${buildingImage960} 960w`}
+                    sizes="(max-width: 650px) 375px, (max-width: 820px) 465px, 473px"
+                  />
+                  <img
+                    src={buildingImage}
+                    alt="BIG SAIF Bau und Renovierung"
+                  />
+                </picture>
               </div>
 
               <div className="project-frame frame-secondary">
@@ -1224,10 +1289,17 @@ function App() {
               </div>
 
               <div className="project-frame frame-wide">
-                <img
-                  src={transportImage}
-                  alt="BIG SAIF Transport und Lieferung"
-                />
+                <picture style={{ display: 'block', width: '100%', height: '100%' }}>
+                  <source
+                    type="image/webp"
+                    srcSet={`${transportImage640} 640w, ${transportImage960} 960w, ${transportImage1440} 1440w`}
+                    sizes="(max-width: 650px) 350px, (max-width: 820px) 434px, (max-width: 1100px) 465px, 535px"
+                  />
+                  <img
+                    src={transportImage}
+                    alt="BIG SAIF Transport und Lieferung"
+                  />
+                </picture>
               </div>
 
             </aside>
@@ -1273,20 +1345,28 @@ function App() {
                   aria-label={`Mehr über ${service.title.join(' ')} erfahren`}
                 >
                   <div className="service-image">
-                    <img
-                      className="service-background"
-                      src={service.backgroundImage}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                    />
+                    <picture style={{ display: 'contents' }}>
+                      <source type="image/webp" srcSet={service.backgroundWebpSources} sizes="(max-width: 650px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                      <img
+                        className="service-background"
+                        src={service.backgroundImage}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
 
-                    <img
-                      className="service-logo"
-                      src={service.brandLogo}
-                      alt={service.brandLogoAlt}
-                      loading="lazy"
-                    />
+                    <picture style={{ display: 'contents' }}>
+                      <source type="image/webp" srcSet={service.brandLogoWebp} />
+                      <img
+                        className="service-logo"
+                        src={service.brandLogo}
+                        alt={service.brandLogoAlt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
                   </div>
 
                   <div className="service-content">
@@ -1400,7 +1480,14 @@ function App() {
                 aria-label="BIG SAIF Markenauftritt"
               >
                 <div className="about-stage-logo">
-                  <img src={mainLogo} alt="BIG SAIF" loading="lazy" />
+                  <picture style={{ display: 'contents' }}>
+                    <source
+                      type="image/webp"
+                      srcSet={`${mainLogo320} 320w, ${mainLogo480} 480w, ${mainLogo768} 768w`}
+                      sizes="(max-width: 699px) 80vw, 400px"
+                    />
+                    <img src={mainLogo} alt="BIG SAIF" loading="lazy" />
+                  </picture>
                 </div>
                 <div className="about-stage-platform" aria-hidden="true">
                   <span className="about-stage-platform-front" />

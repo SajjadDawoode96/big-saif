@@ -1,7 +1,9 @@
 export type BaumanagementProjectComparison = {
   id: string
   beforeImage: string
+  beforeFallbackImage: string
   afterImage: string
+  afterFallbackImage: string
   title?: string
   description?: string
   altBefore: string
@@ -19,8 +21,10 @@ const galleryImages = import.meta.glob('../assets/projects/baumanagement/*.{jpg,
   query: '?url',
 }) as Record<string, string>
 
-const projectsByNumber = new Map<number, Partial<Record<'before' | 'after', string>>>()
-const galleryFilePattern = /\/(\d+)-(before|after)\.(?:jpe?g|png|webp)$/i
+type GalleryImageSources = { webp?: string; fallback?: string }
+
+const projectsByNumber = new Map<number, Partial<Record<'before' | 'after', GalleryImageSources>>>()
+const galleryFilePattern = /\/(\d+)-(before|after)\.(jpe?g|png|webp)$/i
 
 for (const [path, imageUrl] of Object.entries(galleryImages)) {
   const match = path.match(galleryFilePattern)
@@ -28,9 +32,13 @@ for (const [path, imageUrl] of Object.entries(galleryImages)) {
 
   const projectNumber = Number(match[1])
   const imageType = match[2].toLowerCase() as 'before' | 'after'
+  const extension = match[3].toLowerCase()
   const projectImages = projectsByNumber.get(projectNumber) ?? {}
 
-  projectImages[imageType] = imageUrl
+  const imageSources = projectImages[imageType] ?? {}
+  if (extension === 'webp') imageSources.webp = imageUrl
+  else imageSources.fallback = imageUrl
+  projectImages[imageType] = imageSources
   projectsByNumber.set(projectNumber, projectImages)
 }
 
@@ -39,17 +47,19 @@ const completeProjects = [...projectsByNumber.entries()]
   .flatMap(([projectNumber, images]) => {
     const projectLabel = String(projectNumber).padStart(2, '0')
 
-    if (!images.before || !images.after) {
+    if (!images.before?.webp || !images.before.fallback || !images.after?.webp || !images.after.fallback) {
       if (import.meta.env.DEV) {
-        console.warn(`Baumanagement gallery: project ${projectLabel} is missing ${images.before ? 'after' : 'before'} image.`)
+        console.warn(`Baumanagement gallery: project ${projectLabel} is missing a WebP or fallback image.`)
       }
       return []
     }
 
     return [{
       id: `project-${projectLabel}`,
-      beforeImage: images.before,
-      afterImage: images.after,
+      beforeImage: images.before.webp,
+      beforeFallbackImage: images.before.fallback,
+      afterImage: images.after.webp,
+      afterFallbackImage: images.after.fallback,
       altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich',
       altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich',
     }]

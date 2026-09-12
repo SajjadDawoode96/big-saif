@@ -2656,6 +2656,24 @@ h1 span:nth-child(2) {
   background: url('/facility-management-hero-bg.png') center / cover no-repeat;
 }
 
+@supports (background-image: image-set(url('/facility-management-hero-bg-1440.webp') type('image/webp') 1x)) {
+  .facility-management-hero {
+    background-image: image-set(url('/facility-management-hero-bg-1440.webp') type('image/webp') 1x);
+  }
+
+  @media (max-width: 1099px) {
+    .facility-management-hero {
+      background-image: image-set(url('/facility-management-hero-bg-960.webp') type('image/webp') 1x);
+    }
+  }
+
+  @media (max-width: 699px) {
+    .facility-management-hero {
+      background-image: image-set(url('/facility-management-hero-bg-640.webp') type('image/webp') 1x, url('/facility-management-hero-bg-960.webp') type('image/webp') 2x);
+    }
+  }
+}
+
 .facility-management-hero::before {
   content: '';
   position: absolute;
@@ -3721,6 +3739,24 @@ background: linear-gradient(
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+@supports (background-image: image-set(url('/baumanagement-hero-bg-1440.webp') type('image/webp') 1x)) {
+  .baumanagement-hero {
+    background-image: image-set(url('/baumanagement-hero-bg-1440.webp') type('image/webp') 1x);
+  }
+
+  @media (max-width: 1099px) {
+    .baumanagement-hero {
+      background-image: image-set(url('/baumanagement-hero-bg-960.webp') type('image/webp') 1x);
+    }
+  }
+
+  @media (max-width: 699px) {
+    .baumanagement-hero {
+      background-image: image-set(url('/baumanagement-hero-bg-640.webp') type('image/webp') 1x, url('/baumanagement-hero-bg-960.webp') type('image/webp') 2x);
+    }
+  }
 }
 
 .baumanagement-editorial {
