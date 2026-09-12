@@ -2699,12 +2699,9 @@ h1 span:nth-child(2) {
   letter-spacing: 0.005em;
 }
 
-/* Preserve the Transport hero's existing third-line treatment; it is outside
-   the former-outline redesign scope. */
 .transport-hero h1 span:nth-child(3) {
   font-size: 0.92em;
-  color: transparent;
-  -webkit-text-stroke: 1.25px rgba(255, 255, 255, 0.9);
+  color: var(--color-white);
 }
 
 .facility-management-intro {
@@ -2922,7 +2919,9 @@ h1 span:nth-child(2) {
 
 .facility-management-services-intro h2 span:last-child {
   color: var(--facility-accent-dark);
-  letter-spacing: -0.075em;
+  font-family: var(--font-accent);
+  font-weight: 700;
+  letter-spacing: 0.005em;
 }
 
 .facility-management-services-copy {
@@ -3483,6 +3482,8 @@ h1 span:nth-child(2) {
 .facility-management-gallery-grid { grid-template-areas:'one two' 'one three' 'four five'; grid-template-rows:repeat(3, minmax(8rem, 12vw)); }
 .facility-management-gallery-slot-1{grid-area:one}.facility-management-gallery-slot-2{grid-area:two}.facility-management-gallery-slot-3{grid-area:three}.facility-management-gallery-slot-4{grid-area:four}.facility-management-gallery-slot-5{grid-area:five}
 .facility-management-cta{color:var(--color-charcoal);background:var(--color-off-white)}.facility-management-cta-inner{width:min(100%,var(--content-max));margin:0 auto;padding:clamp(6rem,9vw,9rem) var(--page-gutter);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(4rem,10vw,11rem);align-items:end}.facility-management-cta h2{margin:0;font-family:var(--font-heading);font-size:clamp(3rem,5.5vw,5.8rem);font-weight:800;line-height:.86;letter-spacing:-.075em}.facility-management-cta h2 span{display:block}.facility-management-cta h2 span:last-child{color:var(--facility-accent-dark)}.facility-management-cta-inner>div{border-left:1px solid rgba(var(--facility-accent-dark-rgb),.45);padding-left:clamp(1.5rem,3vw,3rem)}.facility-management-cta p{max-width:27rem;margin:0;color:rgba(21,21,21,.7);font-size:clamp(1rem,1.3vw,1.1rem);line-height:1.7}.facility-management-cta a{min-height:3.5rem;margin-top:2rem;padding:0 1.15rem;display:inline-flex;align-items:center;justify-content:space-between;gap:2.5rem;border:1px solid var(--facility-accent-dark);color:var(--facility-accent-dark);font-size:.75rem;font-weight:800;letter-spacing:.08em;text-decoration:none;transition:color .2s,background-color .2s}.facility-management-cta a:hover,.facility-management-cta a:focus-visible{color:var(--color-charcoal);background:var(--facility-accent)}
+
+.facility-management-cta h2 span:last-child { font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
 @media (width <= 899px){.facility-management-gallery-header{grid-template-columns:minmax(0,1fr);row-gap:1.5rem}.facility-management-gallery-header>span{margin:0}.facility-management-gallery-grid{grid-template-columns:1fr;grid-template-areas:'one' 'two' 'three' 'four' 'five';grid-template-rows:repeat(5, minmax(12rem,50vw))}.facility-management-gallery-slot-1{grid-row:auto}}
 
 @media (width <= 699px) {
@@ -3634,7 +3635,7 @@ background: linear-gradient(
 .transport-hero-logo { width: clamp(18.75rem, 24vw, 23.75rem); height: auto; max-width: 100%; object-fit: contain; animation: transport-logo-arrive 1050ms cubic-bezier(.22, 1, .36, 1) 360ms both; }
 .transport-hero h1 { margin: clamp(2.25rem, 3.5vw, 3.25rem) 0 0; color: var(--color-white); font-family: var(--font-heading); font-size: clamp(2.9rem, 5vw, 5.2rem); font-weight: 800; line-height: .96; letter-spacing: -.075em; }
 .transport-hero h1 span { display: block; animation: transport-headline-arrive 950ms cubic-bezier(.22, 1, .36, 1) both; }
-.transport-hero h1 span:nth-child(2) { color: var(--transport-blue); }
+.transport-hero h1 span:nth-child(2) { color: var(--transport-blue); font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
 .transport-hero h1 span:nth-child(2) { animation-delay: 120ms; }
 .transport-hero h1 span:nth-child(3) { animation-delay: 240ms; }
 .transport-hero-content > p { max-width: 27rem; margin: 1.4rem 0 0; color: rgba(255,255,255,.8); font-size: clamp(.875rem,1vw,.94rem); line-height: 1.7; }
@@ -3705,6 +3706,8 @@ background: linear-gradient(
   .transport-overview li { padding-block: 1rem; }
 }
 
+.transport-overview h2 span:last-child { font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
+
 .baumanagement-page {
   --baumanagement-gold: #d8a541;
   --baumanagement-gold-rgb: 216, 165, 65;
@@ -3752,6 +3755,9 @@ background: linear-gradient(
 
 .baumanagement-editorial h1 span:last-child {
   color: var(--baumanagement-gold);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  letter-spacing: 0.005em;
 }
 
 .baumanagement-editorial p {
@@ -4256,6 +4262,9 @@ background: linear-gradient(
 
 .baumanagement-showcase h2 span:last-child {
   color: var(--baumanagement-gold);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  letter-spacing: 0.005em;
 }
 
 .baumanagement-showcase-intro {
@@ -4855,7 +4864,7 @@ background: linear-gradient(
 .transport-services-eyebrow { margin: 0; color: var(--transport-blue); font-size: .7rem; font-weight: 800; letter-spacing: .16em; }
 .transport-services h2 { margin: 1.25rem 0 0; font-family: var(--font-heading); font-size: clamp(3.35rem, 5.15vw, 5.7rem); font-weight: 800; line-height: .86; letter-spacing: -.075em; }
 .transport-services h2 span { display: block; }
-.transport-services h2 span:last-child { color: var(--transport-blue); }
+.transport-services h2 span:last-child { color: var(--transport-blue); font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
 .transport-services-intro { max-width: 31rem; margin: 2rem 0 0; color: rgba(255,255,255,.78); font-size: clamp(1rem, 1.25vw, 1.12rem); line-height: 1.75; }
 
 .transport-services-list { margin: clamp(3rem, 4.5vw, 4.5rem) 0 0; padding: 0; list-style: none; border-top: 1px solid rgba(255,255,255,.22); }
@@ -4977,7 +4986,7 @@ background: linear-gradient(
 }
 
 .transport-process h2 span { display: block; }
-.transport-process h2 span:last-child { color: var(--transport-blue); }
+.transport-process h2 span:last-child { color: var(--transport-blue); font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
 
 .transport-process-intro {
   max-width: 25rem;
@@ -5088,7 +5097,7 @@ background: linear-gradient(
 }
 
 .transport-trust h2 span { display: block; }
-.transport-trust h2 span:last-child { color: var(--transport-blue); }
+.transport-trust h2 span:last-child { color: var(--transport-blue); font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
 
 .transport-trust-copy {
   max-width: 25rem;
@@ -5196,7 +5205,7 @@ background: linear-gradient(
 }
 
 .transport-contact h2 span { display: block; }
-.transport-contact h2 span:last-child { color: var(--transport-blue); }
+.transport-contact h2 span:last-child { color: var(--transport-blue); font-family: var(--font-accent); font-weight: 700; letter-spacing: 0.005em; }
 .transport-contact-support { min-width: 0; }
 
 .transport-contact-support p {
