@@ -603,8 +603,8 @@ function FacilityProjectComparison({ project }: { project: FacilityProjectCompar
         if (event.key === 'ArrowRight') { event.preventDefault(); setFacilityReveal((value) => Math.min(100, value + 5)) }
       }}
     >
-      <img src={project.beforeImage} alt={project.altBefore} />
-      <div className="facility-management-comparison-after" style={{ clipPath: `inset(0 0 0 ${facilityReveal}%)` }}><img src={project.afterImage} alt={project.altAfter} /></div>
+      <img src={project.beforeImage} alt={project.altBefore} loading="lazy" />
+      <div className="facility-management-comparison-after" style={{ clipPath: `inset(0 0 0 ${facilityReveal}%)` }}><img src={project.afterImage} alt={project.altAfter} loading="lazy" /></div>
       <div className="facility-management-comparison-divider" style={{ left: `${facilityReveal}%` }}><span /></div>
       <small className="facility-management-comparison-before-label">VORHER</small><small className="facility-management-comparison-after-label">NACHHER</small>
     </div>
@@ -1252,12 +1252,14 @@ function App() {
                       src={service.backgroundImage}
                       alt=""
                       aria-hidden="true"
+                      loading="lazy"
                     />
 
                     <img
                       className="service-logo"
                       src={service.brandLogo}
                       alt={service.brandLogoAlt}
+                      loading="lazy"
                     />
                   </div>
 
@@ -1316,6 +1318,7 @@ function App() {
                     <img
                       src={project.image}
                       alt={project.imageAlt}
+                      loading="lazy"
                     />
 
                     <span className="project-overlay" aria-hidden="true" />
