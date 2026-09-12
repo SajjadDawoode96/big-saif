@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BIG SAIF</title>
     <script>
-      const base = '/big-saif/'
-      const route = window.location.pathname.startsWith(base)
-        ? window.location.pathname.slice(base.length)
-        : ''
-      window.location.replace(`${base}?p=${encodeURIComponent(`/${route}`)}${window.location.hash}`)
+      const base = '/'
+      const route = window.location.pathname
+      window.location.replace(`${base}?p=${encodeURIComponent(route)}${window.location.hash}`)
     </script>
   </head>
   <body></body>
