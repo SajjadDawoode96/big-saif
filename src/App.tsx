@@ -566,9 +566,9 @@ function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
         </div>
         <div className="footer-column">
           <h3>LEISTUNGEN</h3>
-          <a href={`${applicationBase}baumanagement`}>Baumanagement</a>
-          <a href={`${applicationBase}facility-management`}>Facility Management</a>
-          <a href={`${applicationBase}transport`}>Transport</a>
+          <a href={`${applicationBase}baumanagement/`}>Baumanagement</a>
+          <a href={`${applicationBase}facility-management/`}>Facility Management</a>
+          <a href={`${applicationBase}transport/`}>Transport</a>
         </div>
         <div className="footer-column">
           <h3>NAVIGATION</h3>
@@ -1336,11 +1336,11 @@ function App() {
                   className="service-panel"
                   key={service.id}
                   href={service.id === 'leistung-bau'
-                    ? `${applicationBase}baumanagement`
+                    ? `${applicationBase}baumanagement/`
                     : service.id === 'leistung-facility'
-                      ? `${applicationBase}facility-management`
+                      ? `${applicationBase}facility-management/`
                       : service.id === 'leistung-transport'
-                        ? `${applicationBase}transport`
+                        ? `${applicationBase}transport/`
                         : `#${service.id}`}
                   aria-label={`Mehr über ${service.title.join(' ')} erfahren`}
                 >
@@ -1413,11 +1413,11 @@ function App() {
                   <a
                     className="project-link"
                     href={project.id === 'projekt-baumanagement'
-                      ? `${applicationBase}baumanagement`
+                      ? `${applicationBase}baumanagement/`
                       : project.id === 'projekt-facility-management'
-                        ? `${applicationBase}facility-management`
+                        ? `${applicationBase}facility-management/`
                         : project.id === 'projekt-transport'
-                          ? `${applicationBase}transport`
+                          ? `${applicationBase}transport/`
                           : `#${project.id}`}
                     aria-label={`${project.category}: Projekt ansehen`}
                   >
