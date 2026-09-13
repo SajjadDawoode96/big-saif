@@ -7,16 +7,28 @@ const routes = {
     title: 'Baumanagement & Renovierung | BIG SAIF',
     description: 'BIG SAIF bietet Leistungen für Bau, Umbau und Renovierung von Gebäuden und Wohnobjekten in Deutschland.',
     canonical: 'https://www.bigsaif.de/baumanagement/',
+    image: 'https://www.bigsaif.de/baumanagement-hero-bg.png',
+    imageWidth: '1675',
+    imageHeight: '939',
+    imageAlt: 'Illustration eines modernen Gebäudes für BIG SAIF Baumanagement',
   },
   'facility-management': {
     title: 'Facility Management & Gebäudepflege | BIG SAIF',
     description: 'BIG SAIF bietet Facility Management, Gebäudereinigung und Pflege für Büros, Gewerbe, Gastronomie, Außenbereiche und private Objekte.',
     canonical: 'https://www.bigsaif.de/facility-management/',
+    image: 'https://www.bigsaif.de/facility-management-hero-bg.png',
+    imageWidth: '1678',
+    imageHeight: '937',
+    imageAlt: 'Mitarbeiter bei der Reinigung einer Glasfassade',
   },
   transport: {
     title: 'Transport & Lieferung in Deutschland | BIG SAIF',
     description: 'BIG SAIF bietet Transport- und Lieferleistungen zwischen Städten in Deutschland – zuverlässig, sicher und termingerecht.',
     canonical: 'https://www.bigsaif.de/transport/',
+    image: 'https://www.bigsaif.de/transport-hero-bg.png',
+    imageWidth: '1672',
+    imageHeight: '941',
+    imageAlt: 'Karte einer Transportstrecke durch Deutschland',
   },
 }
 
@@ -49,7 +61,26 @@ function withRouteMetadata(html, metadata) {
   const title = `<title>${escapeHtml(metadata.title)}</title>`
   const description = `<meta name="description" content="${escapeHtml(metadata.description)}" />`
   const canonical = `<link rel="canonical" href="${escapeHtml(metadata.canonical)}" />`
-  const updatedHead = replaceHeadTag(
+  const socialMetadata = [
+    ['og:title', metadata.title],
+    ['og:description', metadata.description],
+    ['og:url', metadata.canonical],
+    ['og:type', 'website'],
+    ['og:image', metadata.image],
+    ['og:image:width', metadata.imageWidth],
+    ['og:image:height', metadata.imageHeight],
+    ['og:image:alt', metadata.imageAlt],
+    ['og:site_name', 'BIG SAIF'],
+    ['og:locale', 'de_DE'],
+  ]
+  const twitterMetadata = [
+    ['twitter:card', 'summary_large_image'],
+    ['twitter:title', metadata.title],
+    ['twitter:description', metadata.description],
+    ['twitter:image', metadata.image],
+    ['twitter:image:alt', metadata.imageAlt],
+  ]
+  const coreMetadata = replaceHeadTag(
     replaceHeadTag(
       replaceHeadTag(head, /<title>[\s\S]*?<\/title>/g, title, 'title'),
       /<meta\s+name=["']description["'][^>]*>/gi,
@@ -59,6 +90,23 @@ function withRouteMetadata(html, metadata) {
     /<link\s+rel=["']canonical["'][^>]*>/gi,
     canonical,
     'canonical',
+  )
+  const updatedHead = twitterMetadata.reduce(
+    (currentHead, [name, value]) => replaceHeadTag(
+      currentHead,
+      new RegExp(`<meta\\s+name=["']${name}["'][^>]*>`, 'gi'),
+      `<meta name="${name}" content="${escapeHtml(value)}" />`,
+      name,
+    ),
+    socialMetadata.reduce(
+      (currentHead, [property, value]) => replaceHeadTag(
+        currentHead,
+        new RegExp(`<meta\\s+property=["']${property}["'][^>]*>`, 'gi'),
+        `<meta property="${property}" content="${escapeHtml(value)}" />`,
+        property,
+      ),
+      coreMetadata,
+    ),
   )
 
   return `${html.slice(0, headStart)}${updatedHead}${html.slice(headEnd + '</head>'.length)}`
