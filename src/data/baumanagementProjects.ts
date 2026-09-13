@@ -54,14 +54,58 @@ const completeProjects = [...projectsByNumber.entries()]
       return []
     }
 
+    const altTextByProject = {
+      1: {
+        before: 'Vorher: Innenraum mit teilweise gefliester Wand und offenen Anschlüssen',
+        after: 'Nachher: Innenraum mit gefliester Wandfläche, Schutzfolie und offenen Anschlüssen',
+      },
+      2: {
+        before: 'Vorher: Schmaler Innenraum mit grauem Fliesenboden',
+        after: 'Nachher: Großformatige Bodenfliesen mit Abstandshaltern während der Verlegung',
+      },
+      3: {
+        before: 'Vorher: Holztreppe mit Geländer und weißer Wand',
+        after: 'Nachher: Treppenbereich mit bearbeiteter Wandfläche',
+      },
+      4: {
+        before: 'Vorher: Treppenabsatz mit Türen und weißer Wandfläche',
+        after: 'Nachher: Treppenabsatz mit bearbeiteten Wand- und Deckenflächen',
+      },
+      5: {
+        before: 'Vorher: Heller Innenraum mit Bodenfliesen und teilweise gefliester Wand',
+        after: 'Nachher: Innenraum während Arbeiten mit offener Decke und Leiter',
+      },
+      6: {
+        before: 'Vorher: Raum mit Bodenfliesen, Wandfliesen und offenen Anschlüssen',
+        after: 'Nachher: Arbeiten an einer gefliesten Wandfläche in einem Innenraum',
+      },
+      7: {
+        before: 'Vorher: Weiße Wandfliesen mit offenen Steckdosenanschlüssen',
+        after: 'Nachher: Innenraum mit teilweise abgedeckten Wandfliesen',
+      },
+      8: {
+        before: 'Vorher: Innenraum mit Fenster, Tür, Heizkörper und Bodenfliesen',
+        after: 'Nachher: Innenraum mit Deckenplatten und bearbeiteten Wänden',
+      },
+      9: {
+        before: 'Vorher: Wandbereich mit weißen Fliesen und offenen Leitungen',
+        after: 'Nachher: Nahaufnahme einer weißen gefliesten Wandfläche',
+      },
+      10: {
+        before: 'Vorher: Decke mit verspachtelten Plattenstößen und offenem Kabel',
+        after: 'Nachher: Decke mit großflächigen Platten und sichtbaren Fugen',
+      },
+    } as const
+    const altText = altTextByProject[projectNumber as keyof typeof altTextByProject]
+
     return [{
       id: `project-${projectLabel}`,
       beforeImage: images.before.webp,
       beforeFallbackImage: images.before.fallback,
       afterImage: images.after.webp,
       afterFallbackImage: images.after.fallback,
-      altBefore: 'Temporäres Entwicklungsbild für einen Vorher-Vergleich',
-      altAfter: 'Temporäres Entwicklungsbild für einen Nachher-Vergleich',
+      altBefore: altText.before,
+      altAfter: altText.after,
     }]
   })
 
