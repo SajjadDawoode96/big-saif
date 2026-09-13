@@ -2,8 +2,37 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 const distDirectory = 'dist'
+const organization = {
+  '@type': 'Organization',
+  '@id': 'https://www.bigsaif.de/#organization',
+  name: 'BIG SAIF',
+  url: 'https://www.bigsaif.de/',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://www.bigsaif.de/big-saif-logo.png',
+  },
+  email: 'service@bigsaif.de',
+  telephone: ['+491791527341', '+4917647119724'],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Amselweg 13',
+    postalCode: '71679',
+    addressLocality: 'Asperg',
+    addressCountry: 'DE',
+  },
+}
+const website = {
+  '@type': 'WebSite',
+  '@id': 'https://www.bigsaif.de/#website',
+  url: 'https://www.bigsaif.de/',
+  name: 'BIG SAIF',
+  publisher: {
+    '@id': organization['@id'],
+  },
+}
 const routes = {
   baumanagement: {
+    serviceName: 'Baumanagement & Renovierung',
     title: 'Baumanagement & Renovierung | BIG SAIF',
     description: 'BIG SAIF bietet Leistungen für Bau, Umbau und Renovierung von Gebäuden und Wohnobjekten in Deutschland.',
     canonical: 'https://www.bigsaif.de/baumanagement/',
@@ -13,6 +42,7 @@ const routes = {
     imageAlt: 'Illustration eines modernen Gebäudes für BIG SAIF Baumanagement',
   },
   'facility-management': {
+    serviceName: 'Facility Management & Gebäudepflege',
     title: 'Facility Management & Gebäudepflege | BIG SAIF',
     description: 'BIG SAIF bietet Facility Management, Gebäudereinigung und Pflege für Büros, Gewerbe, Gastronomie, Außenbereiche und private Objekte.',
     canonical: 'https://www.bigsaif.de/facility-management/',
@@ -22,6 +52,7 @@ const routes = {
     imageAlt: 'Mitarbeiter bei der Reinigung einer Glasfassade',
   },
   transport: {
+    serviceName: 'Transport & Lieferung in Deutschland',
     title: 'Transport & Lieferung in Deutschland | BIG SAIF',
     description: 'BIG SAIF bietet Transport- und Lieferleistungen zwischen Städten in Deutschland – zuverlässig, sicher und termingerecht.',
     canonical: 'https://www.bigsaif.de/transport/',
@@ -38,6 +69,8 @@ const escapeHtml = (value) => value
   .replaceAll('>', '&gt;')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#39;')
+
+const serializeJsonLd = (value) => JSON.stringify(value).replaceAll('<', '\\u003c')
 
 function replaceHeadTag(head, pattern, replacement, label) {
   const matches = [...head.matchAll(pattern)]
@@ -61,6 +94,41 @@ function withRouteMetadata(html, metadata) {
   const title = `<title>${escapeHtml(metadata.title)}</title>`
   const description = `<meta name="description" content="${escapeHtml(metadata.description)}" />`
   const canonical = `<link rel="canonical" href="${escapeHtml(metadata.canonical)}" />`
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization,
+      website,
+      {
+        '@type': 'Service',
+        '@id': `${metadata.canonical}#service`,
+        name: metadata.serviceName,
+        url: metadata.canonical,
+        description: metadata.description,
+        provider: {
+          '@id': organization['@id'],
+        },
+        areaServed: {
+          '@type': 'Country',
+          name: 'Deutschland',
+        },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${metadata.canonical}#webpage`,
+        url: metadata.canonical,
+        name: metadata.title,
+        description: metadata.description,
+        isPartOf: {
+          '@id': website['@id'],
+        },
+        mainEntity: {
+          '@id': `${metadata.canonical}#service`,
+        },
+      },
+    ],
+  }
+  const jsonLdScript = `<script type="application/ld+json">${serializeJsonLd(jsonLd)}</script>`
   const socialMetadata = [
     ['og:title', metadata.title],
     ['og:description', metadata.description],
@@ -91,7 +159,7 @@ function withRouteMetadata(html, metadata) {
     canonical,
     'canonical',
   )
-  const updatedHead = twitterMetadata.reduce(
+  const metadataHead = twitterMetadata.reduce(
     (currentHead, [name, value]) => replaceHeadTag(
       currentHead,
       new RegExp(`<meta\\s+name=["']${name}["'][^>]*>`, 'gi'),
@@ -107,6 +175,13 @@ function withRouteMetadata(html, metadata) {
       ),
       coreMetadata,
     ),
+  )
+
+  const updatedHead = replaceHeadTag(
+    metadataHead,
+    /<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi,
+    jsonLdScript,
+    'JSON-LD',
   )
 
   return `${html.slice(0, headStart)}${updatedHead}${html.slice(headEnd + '</head>'.length)}`
