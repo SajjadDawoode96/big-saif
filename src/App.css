@@ -1217,7 +1217,7 @@ h1 span:nth-child(2) {
     text-decoration: none;
   }
 
-  .project-link > img {
+  .project-link > picture > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1276,7 +1276,7 @@ h1 span:nth-child(2) {
       linear-gradient(90deg, rgba(0, 0, 0, 0.32), transparent 75%);
   }
 
-  #projekt-transport .project-link > img {
+  #projekt-transport .project-link > picture > img {
     object-position: 42% 65%;
   }
 
@@ -1402,7 +1402,7 @@ h1 span:nth-child(2) {
     text-decoration: none;
   }
 
-  .project-link > img {
+  .project-link > picture > img {
     width: 100%;
     height: 100%;
 
@@ -1487,7 +1487,7 @@ h1 span:nth-child(2) {
       linear-gradient(90deg, rgba(0, 0, 0, 0.32), transparent 75%);
   }
 
-  #projekt-transport .project-link > img {
+  #projekt-transport .project-link > picture > img {
     object-position: 42% 65%;
   }
 
@@ -1497,8 +1497,8 @@ h1 span:nth-child(2) {
       linear-gradient(25deg, rgba(0, 0, 0, 0.48), transparent 65%);
   }
 
-  .project-link:hover > img,
-  .project-link:focus-visible > img {
+  .project-link:hover > picture > img,
+  .project-link:focus-visible > picture > img {
     transform: scale(1.025);
   }
 }
