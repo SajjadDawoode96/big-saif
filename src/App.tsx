@@ -54,9 +54,25 @@ const applicationBase = import.meta.env.BASE_URL
 
 const navigation = [
   ['Leistungen', '#leistungen'],
+  ['Nachweise', '#nachweise'],
   ['Referenzen', '#referenzen'],
   ['Über uns', '#ueber-uns'],
   ['Kontakt', '#kontakt'],
+]
+
+const evidenceDocuments = [
+  {
+    title: 'Freistellungsbescheinigung §48b',
+    preview: `${applicationBase}documents/previews/freistellungsbescheinigung-48b.png`,
+  },
+  {
+    title: 'Gewerbe-Haftpflichtversicherung',
+    preview: `${applicationBase}documents/previews/gewerbe-haftpflichtversicherung.png`,
+  },
+  {
+    title: 'Führungszeugnis',
+    preview: `${applicationBase}documents/previews/fuehrungszeugnis.png`,
+  },
 ]
 
 const services = [
@@ -490,13 +506,15 @@ function SiteHeader({
   servicePage = false,
   onContactOpen,
   onContactTriggerRef,
+  onEvidenceOpen,
 }: {
   servicePage?: boolean
   onContactOpen?: () => void
   onContactTriggerRef?: (element: HTMLAnchorElement | null) => void
+  onEvidenceOpen?: () => void
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const links = navigation.map(([label, href]) => [label, servicePage ? `${applicationBase}${href}` : href])
+  const links = navigation.map(([label, href]) => [label, servicePage && href.startsWith('#') ? `${applicationBase}${href}` : href])
   const closeMenu = () => setMenuOpen(false)
 
   return (
@@ -530,7 +548,21 @@ function SiteHeader({
       >
         <div className="nav-links">
           {links.map(([label, href]) => (
-            <a key={href} href={href} onClick={closeMenu}>{label}</a>
+            <a
+              key={label}
+              href={href}
+              onClick={(event) => {
+                if (label === 'Nachweise' && onEvidenceOpen) {
+                  event.preventDefault()
+                  closeMenu()
+                  onEvidenceOpen()
+                  return
+                }
+                closeMenu()
+              }}
+            >
+              {label}
+            </a>
           ))}
         </div>
         <a
@@ -554,7 +586,7 @@ function SiteHeader({
   )
 }
 
-function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
+function SiteFooter({ servicePage = false, onEvidenceOpen }: { servicePage?: boolean; onEvidenceOpen?: () => void }) {
   const homeLink = (hash: string) => (servicePage ? `${applicationBase}${hash}` : hash)
 
   return (
@@ -576,6 +608,7 @@ function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
           <a href={homeLink('#leistungen')}>Leistungen</a>
           <a href={homeLink('#referenzen')}>Referenzen</a>
           <a href={homeLink('#ueber-uns')}>Über BIG SAIF</a>
+          <a href="#nachweise" onClick={(event) => { event.preventDefault(); onEvidenceOpen?.() }}>Nachweise</a>
         </div>
       </div>
       <div className="footer-bottom">
@@ -589,16 +622,61 @@ function SiteFooter({ servicePage = false }: { servicePage?: boolean }) {
   )
 }
 
+function EvidenceModal({ onClose }: { onClose: () => void }) {
+  const [selectedDocument, setSelectedDocument] = useState<(typeof evidenceDocuments)[number] | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    closeButtonRef.current?.focus()
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  return (
+    <div className="evidence-modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
+      <section className={`evidence-modal${selectedDocument ? ' is-detail' : ''}`} role="dialog" aria-modal="true" aria-labelledby="evidence-modal-title">
+        <header className="evidence-modal-header">
+          <div>
+            <p>NACHWEISE</p>
+            <span id="evidence-modal-title">{selectedDocument?.title ?? 'Offizielle Dokumente von BIG SAIF.'}</span>
+          </div>
+          <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Nachweise schließen">×</button>
+        </header>
+        {selectedDocument ? (
+          <div className="evidence-modal-detail">
+            <button type="button" className="evidence-modal-back" onClick={() => setSelectedDocument(null)}>← ZURÜCK</button>
+            <div className="evidence-modal-preview"><img src={selectedDocument.preview} alt={selectedDocument.title} /></div>
+          </div>
+        ) : (
+          <div className="evidence-modal-gallery" aria-label="Dokumente">
+            {evidenceDocuments.map((document) => (
+              <button type="button" key={document.title} onClick={() => setSelectedDocument(document)} aria-label={`${document.title} vergrößern`}>
+                <span><img src={document.preview} alt="" /></span>
+                <strong>{document.title}</strong>
+              </button>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  )
+}
+
 function BaumanagementPage({
   onContactOpen,
   onContactTriggerRef,
+  onEvidenceOpen,
 }: {
   onContactOpen: () => void
   onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+  onEvidenceOpen: () => void
 }) {
   return (
     <div className="site-shell baumanagement-page">
-      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} onEvidenceOpen={onEvidenceOpen} />
       <main>
         <section className="baumanagement-hero" aria-label="Baumanagement">
           <div className="baumanagement-logo-reveal">
@@ -629,7 +707,7 @@ function BaumanagementPage({
         <BaumanagementServiceAreas />
         <BaumanagementProjectShowcase />
       </main>
-      <div className="baumanagement-footer-shell"><SiteFooter servicePage /></div>
+      <div className="baumanagement-footer-shell"><SiteFooter servicePage onEvidenceOpen={onEvidenceOpen} /></div>
     </div>
   )
 }
@@ -675,15 +753,17 @@ function FacilityProjectComparison({ project }: { project: FacilityProjectCompar
 function FacilityManagementPage({
   onContactOpen,
   onContactTriggerRef,
+  onEvidenceOpen,
 }: {
   onContactOpen: () => void
   onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+  onEvidenceOpen: () => void
 }) {
   const galleryGroups = facilityProjectGroups.length ? facilityProjectGroups : [[]]
 
   return (
     <div className="site-shell facility-management-page">
-      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} onEvidenceOpen={onEvidenceOpen} />
       <main>
         <section className="facility-management-hero" aria-labelledby="facility-management-title">
           <div className="facility-management-editorial">
@@ -810,7 +890,7 @@ function FacilityManagementPage({
         </section>
         <section className="facility-management-cta" aria-labelledby="facility-management-cta-title"><div className="facility-management-cta-inner"><h2 id="facility-management-cta-title"><span>BEREIT FÜR</span><span>EIN SAUBERES OBJEKT?</span></h2><div><p>Sprechen Sie mit uns über die passende Reinigung und Gebäudepflege für Ihr Objekt.</p><a href={`${applicationBase}#kontakt`} onClick={(event) => { event.preventDefault(); onContactTriggerRef(event.currentTarget); onContactOpen() }}>SERVICE ANFRAGEN <Arrow /></a></div></div></section>
       </main>
-      <SiteFooter servicePage />
+      <SiteFooter servicePage onEvidenceOpen={onEvidenceOpen} />
     </div>
   )
 }
@@ -818,13 +898,15 @@ function FacilityManagementPage({
 function TransportPage({
   onContactOpen,
   onContactTriggerRef,
+  onEvidenceOpen,
 }: {
   onContactOpen: () => void
   onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+  onEvidenceOpen: () => void
 }) {
   return (
     <div className="site-shell transport-page">
-      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} />
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} onEvidenceOpen={onEvidenceOpen} />
       <main>
         <section className="transport-hero" aria-labelledby="transport-title">
           <picture style={{ display: 'contents' }}>
@@ -955,7 +1037,7 @@ function TransportPage({
           </div>
         </section>
       </main>
-      <SiteFooter servicePage />
+      <SiteFooter servicePage onEvidenceOpen={onEvidenceOpen} />
     </div>
   )
 }
@@ -963,6 +1045,7 @@ function TransportPage({
 function App() {
   const [aboutStageActive, setAboutStageActive] = useState(false)
   const [contactModalOpen, setContactModalOpen] = useState(false)
+  const [evidenceModalOpen, setEvidenceModalOpen] = useState(false)
   const aboutStageRef = useRef<HTMLDivElement>(null)
   const contactTriggerRef = useRef<HTMLElement | null>(null)
   const directPathname = window.location.pathname.startsWith(applicationBase)
@@ -1049,14 +1132,32 @@ function App() {
     }
   }, [contactModalOpen])
 
+  useEffect(() => {
+    if (!evidenceModalOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    const previousPaddingRight = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+
+    document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.body.style.paddingRight = previousPaddingRight
+    }
+  }, [evidenceModalOpen])
+
   if (isBaumanagementPage) {
     return (
       <>
         <BaumanagementPage
           onContactOpen={() => setContactModalOpen(true)}
           onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+          onEvidenceOpen={() => setEvidenceModalOpen(true)}
         />
         {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+        {evidenceModalOpen && <EvidenceModal onClose={() => setEvidenceModalOpen(false)} />}
       </>
     )
   }
@@ -1066,8 +1167,10 @@ function App() {
         <FacilityManagementPage
           onContactOpen={() => setContactModalOpen(true)}
           onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+          onEvidenceOpen={() => setEvidenceModalOpen(true)}
         />
         {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+        {evidenceModalOpen && <EvidenceModal onClose={() => setEvidenceModalOpen(false)} />}
       </>
     )
   }
@@ -1077,15 +1180,17 @@ function App() {
         <TransportPage
           onContactOpen={() => setContactModalOpen(true)}
           onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+          onEvidenceOpen={() => setEvidenceModalOpen(true)}
         />
         {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+        {evidenceModalOpen && <EvidenceModal onClose={() => setEvidenceModalOpen(false)} />}
       </>
     )
   }
 
   return (
     <div className="site-shell">
-      <SiteHeader />
+      <SiteHeader onEvidenceOpen={() => setEvidenceModalOpen(true)} />
 
       <main id="top">
         <section
@@ -1576,10 +1681,11 @@ function App() {
 
             <div className="closing-signature" aria-hidden="true">BIG SAIF</div>
 
-            <SiteFooter />
+            <SiteFooter onEvidenceOpen={() => setEvidenceModalOpen(true)} />
           </div>
         </section>
       </main>
+      {evidenceModalOpen && <EvidenceModal onClose={() => setEvidenceModalOpen(false)} />}
       {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
     </div>
   )
