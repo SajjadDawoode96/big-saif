@@ -447,7 +447,7 @@ function BaumanagementServiceAreas() {
             <p>BAUMANAGEMENT</p>
             <h2 id="service-areas-title">LEISTUNGSBEREICHE</h2>
           </div>
-          <p className="baumanagement-transition-intro">Von Bau- und Renovierungsarbeiten über Reparaturen bis hin zu Innenausbau und Gestaltung – Leistungen für unterschiedliche Anforderungen rund um Gebäude und Räume.</p>
+          <p className="baumanagement-transition-intro">Von Bau- und Renovierungsarbeiten über Reparaturen bis hin zu Innenausbau und Gestaltung – Leistungen für unterschiedliche Anforderungen rund um Gebäude und Räume. Für die laufende Pflege von Gebäuden bietet BIG SAIF auch <a href={`${applicationBase}facility-management/`}>Facility Management</a>.</p>
         </header>
 
         <div className="baumanagement-service-stage">
@@ -716,7 +716,7 @@ function FacilityManagementPage({
             <header className="facility-management-services-intro">
               <p className="facility-management-services-label">UNSERE LEISTUNGEN</p>
               <h2 id="facility-management-services-title"><span>FACILITY MANAGEMENT</span><span>MIT SYSTEM.</span></h2>
-              <p className="facility-management-services-copy">Professionelle Reinigung und kontinuierliche Gebäudepflege für Unternehmen, Gewerbe und private Objekte. Zuverlässig organisiert, flexibel ausgeführt und auf Ihre Anforderungen abgestimmt.</p>
+              <p className="facility-management-services-copy">Professionelle Reinigung und kontinuierliche Gebäudepflege für Unternehmen, Gewerbe und private Objekte. Zuverlässig organisiert, flexibel ausgeführt und auf Ihre Anforderungen abgestimmt. Für Bau-, Umbau- und Renovierungsarbeiten bietet BIG SAIF auch <a href={`${applicationBase}baumanagement/`}>Baumanagement</a>.</p>
               <p className="facility-management-services-signature"><span>SAUBER.</span><span>ZUVERLÄSSIG.</span><span>REGELMÄSSIG.</span></p>
             </header>
 
