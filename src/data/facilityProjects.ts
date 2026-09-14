@@ -60,8 +60,8 @@ const completeProjects = [...projectsByNumber.entries()]
       beforeFallbackImage: images.after.fallback!,
       afterImage: images.before.webp!,
       afterFallbackImage: images.before.fallback!,
-      altBefore: 'Vorher: Reinigungsbereich',
-      altAfter: 'Nachher: gereinigter Bereich',
+      altBefore: 'Vorher: Verschmutzter gefliester Eingangsbereich mit Fußspuren und Laub',
+      altAfter: 'Nachher: Sauberer gefliester Eingangsbereich mit Aufzug und Treppe',
     }]
   })
 
