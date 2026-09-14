@@ -54,7 +54,7 @@ const applicationBase = import.meta.env.BASE_URL
 
 const navigation = [
   ['Leistungen', '#leistungen'],
-  ['Nachweise', '#nachweise'],
+  ['Dokumente', '#nachweise'],
   ['Referenzen', '#referenzen'],
   ['Über uns', '#ueber-uns'],
   ['Kontakt', '#kontakt'],
@@ -552,7 +552,7 @@ function SiteHeader({
               key={label}
               href={href}
               onClick={(event) => {
-                if (label === 'Nachweise' && onEvidenceOpen) {
+                if (label === 'Dokumente' && onEvidenceOpen) {
                   event.preventDefault()
                   closeMenu()
                   onEvidenceOpen()
@@ -608,7 +608,7 @@ function SiteFooter({ servicePage = false, onEvidenceOpen }: { servicePage?: boo
           <a href={homeLink('#leistungen')}>Leistungen</a>
           <a href={homeLink('#referenzen')}>Referenzen</a>
           <a href={homeLink('#ueber-uns')}>Über BIG SAIF</a>
-          <a href="#nachweise" onClick={(event) => { event.preventDefault(); onEvidenceOpen?.() }}>Nachweise</a>
+          <a href="#nachweise" onClick={(event) => { event.preventDefault(); onEvidenceOpen?.() }}>Dokumente</a>
         </div>
       </div>
       <div className="footer-bottom">
@@ -640,10 +640,10 @@ function EvidenceModal({ onClose }: { onClose: () => void }) {
       <section className={`evidence-modal${selectedDocument ? ' is-detail' : ''}`} role="dialog" aria-modal="true" aria-labelledby="evidence-modal-title">
         <header className="evidence-modal-header">
           <div>
-            <p>NACHWEISE</p>
+            <p>DOKUMENTE</p>
             <span id="evidence-modal-title">{selectedDocument?.title ?? 'Offizielle Dokumente von BIG SAIF.'}</span>
           </div>
-          <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Nachweise schließen">×</button>
+          <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Dokumente schließen">×</button>
         </header>
         {selectedDocument ? (
           <div className="evidence-modal-detail">
