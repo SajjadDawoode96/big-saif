@@ -61,6 +61,16 @@ const routes = {
     imageHeight: '941',
     imageAlt: 'Karte einer Transportstrecke durch Deutschland',
   },
+  datenschutz: {
+    serviceName: 'Datenschutzerklärung',
+    title: 'Datenschutzerklärung | BIG SAIF',
+    description: 'Informationen zum Datenschutz bei BIG SAIF sowie zu unseren Grundsätzen für Vertrauen, Sorgfalt, Transparenz und verantwortungsvollen Service.',
+    canonical: 'https://www.bigsaif.de/datenschutz/',
+    image: 'https://www.bigsaif.de/baumanagement-hero-bg.png',
+    imageWidth: '1675',
+    imageHeight: '939',
+    imageAlt: 'BIG SAIF – Bau, Facility Management und Transport',
+  },
 }
 
 const escapeHtml = (value) => value

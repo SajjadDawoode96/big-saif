@@ -57,6 +57,7 @@ const navigation = [
   ['Dokumente', '#nachweise'],
   ['Referenzen', '#referenzen'],
   ['Über uns', '#ueber-uns'],
+  ['Datenschutz', `${applicationBase}datenschutz/`],
   ['Kontakt', '#kontakt'],
 ]
 
@@ -615,7 +616,7 @@ function SiteFooter({ servicePage = false, onEvidenceOpen }: { servicePage?: boo
         <span>© 2026 BIG SAIF</span>
         <div>
           <a href="#impressum">Impressum</a>
-          <a href="#datenschutz">Datenschutz</a>
+          <a href={`${applicationBase}datenschutz/`}>Datenschutz</a>
         </div>
       </div>
     </footer>
@@ -1042,6 +1043,67 @@ function TransportPage({
   )
 }
 
+const standards = [
+  {
+    number: '01',
+    title: 'VERTRAUEN & PRIVATSPHÄRE',
+    description: 'Wir respektieren Ihr privates und geschäftliches Umfeld. Unsere Arbeit konzentriert sich auf die Bereiche, die für den vereinbarten Service relevant sind. Informationen, die uns dabei begegnen, behandeln wir diskret. Aufnahmen für Veröffentlichungen oder Werbezwecke verwenden wir nur mit Ihrer entsprechenden Zustimmung.',
+  },
+  {
+    number: '02',
+    title: 'SORGFALT & EIGENTUM',
+    description: 'Wohnungen, Büros, Möbel, Geräte und weiteres Eigentum behandeln wir sorgfältig. Wir arbeiten mit dem Bewusstsein, in den Räumen anderer Menschen und Unternehmen tätig zu sein, und vermeiden unnötige Eingriffe in persönliche Gegenstände.',
+  },
+  {
+    number: '03',
+    title: 'ZUVERLÄSSIGKEIT & TRANSPARENZ',
+    description: 'Der vereinbarte Arbeitsumfang soll nachvollziehbar sein. Termine nehmen wir ernst. Wenn sich relevante Änderungen oder Verzögerungen ergeben, ist eine klare Abstimmung mit Ihnen wichtig – damit Überraschungen möglichst vermieden werden.',
+  },
+  {
+    number: '04',
+    title: 'VERANTWORTUNG & NACHBETREUUNG',
+    description: 'Sollten während der Arbeit Fragen oder Vorfälle entstehen, sprechen wir diese offen und professionell an. Auch nach Abschluss können Sie uns Rückmeldungen sowie berechtigte Fragen oder Anliegen zum Service mitteilen.',
+  },
+]
+
+function DatenschutzPage({
+  onContactOpen,
+  onContactTriggerRef,
+  onEvidenceOpen,
+}: {
+  onContactOpen: () => void
+  onContactTriggerRef: (element: HTMLAnchorElement | null) => void
+  onEvidenceOpen: () => void
+}) {
+  return (
+    <div className="site-shell privacy-page">
+      <SiteHeader servicePage onContactOpen={onContactOpen} onContactTriggerRef={onContactTriggerRef} onEvidenceOpen={onEvidenceOpen} />
+      <main>
+        <section className="privacy-hero" aria-labelledby="privacy-title"><div className="standards-container"><p className="standards-eyebrow">BIG SAIF</p><h1 id="privacy-title">DATENSCHUTZERKLÄRUNG.</h1><p className="privacy-lead">Der verantwortungsvolle Umgang mit personenbezogenen Daten gehört für BIG SAIF zu einem vertrauensvollen Service.</p><p>Diese Seite informiert über die Verarbeitung personenbezogener Daten im Zusammenhang mit der BIG SAIF Website und den verfügbaren Kontaktmöglichkeiten.</p></div></section>
+
+        <section className="privacy-content" aria-label="Datenschutzinformationen"><div className="privacy-reading">
+          <article><p className="privacy-number">01</p><h2>VERANTWORTLICHER</h2><p>Verantwortlich für diese Website ist:</p><address><strong>BIG SAIF</strong><br />Amselweg 13<br />71679 Asperg<br />Deutschland<br /><a href="mailto:service@bigsaif.de">service@bigsaif.de</a><br /><a href="tel:+491791527341">+49 179 1527341</a><br /><a href="tel:+4917647119724">+49 176 47119724</a></address></article>
+          <article><p className="privacy-number">02</p><h2>ALLGEMEINE HINWEISE</h2><p>Personenbezogene Daten sind Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. BIG SAIF verarbeitet personenbezogene Daten, soweit sie bei der Nutzung dieser Website entstehen oder wenn Sie freiwillig Kontakt aufnehmen. Die Website selbst enthält kein Eingabeformular für Besucherinnen und Besucher.</p></article>
+          <article><p className="privacy-number">03</p><h2>BEREITSTELLUNG DER WEBSITE / HOSTING</h2><p>Die Website wird als statische Website bereitgestellt und derzeit über GitHub Pages gehostet. Beim Aufruf einer Website können durch den Hosting-Anbieter technisch erforderliche Verbindungsdaten verarbeitet werden. Angaben zu konkreten Protokolldaten, Speicherfristen, Unterauftragnehmern oder Verarbeitungsorten ergeben sich nicht aus dieser Website-Implementierung.</p></article>
+          <article><p className="privacy-number">04</p><h2>KONTAKTAUFNAHME</h2><h3>TELEFON</h3><p>Ein Telefonlink kann die Telefonfunktion Ihres Geräts oder Ihrer Anwendung öffnen. Die Website selbst zeichnet Telefongespräche nicht auf.</p><h3>E-MAIL</h3><p>Der E-Mail-Link öffnet die von Ihnen eingerichtete E-Mail-Anwendung. Daten werden erst übermittelt, wenn Sie sich entscheiden, eine E-Mail zu versenden.</p><h3>WHATSAPP</h3><p>Der WhatsApp-Link öffnet nach Ihrer Aktivierung den Dienst wa.me. Vor diesem Klick übermittelt die BIG SAIF Website keine Besucherinformationen an WhatsApp. Nach der Aktivierung erfolgt die weitere Verarbeitung im Umfeld des externen Dienstes.</p></article>
+          <article><p className="privacy-number">05</p><h2>GOOGLE MAPS LINK</h2><p>Die Website enthält einen Link, über den Sie die veröffentlichte BIG SAIF Adresse in Google Maps öffnen können. Eine Karte ist nicht eingebettet; vor Ihrer Aktivierung des externen Links wird durch diese Implementierung keine Verbindung zu Google Maps hergestellt.</p></article>
+          <article><p className="privacy-number">06</p><h2>COOKIES, TRACKING & BROWSER-SPEICHER</h2><p>Die aktuelle BIG SAIF Website-Implementierung verwendet kein eigenes Analyse- oder Tracking-System, keine Werbepixel, kein Besucherprofiling und keine Speicherung von Kontaktformularen. Es wurden keine anwendungsseitigen Cookies sowie keine Nutzung von localStorage oder sessionStorage zur Besucherverfolgung implementiert. Diese Aussage betrifft die Website-Implementierung und nicht technisch erforderliche Verarbeitungen durch Infrastruktur- oder Kommunikationsanbieter.</p></article>
+          <article><p className="privacy-number">07</p><h2>DOKUMENTE</h2><p>Die Funktion „Dokumente“ zeigt lokal gehostete statische Vorschauen und Dateien. Sie erhebt keine Besuchereingaben, verwendet keine Analyse und erstellt kein Benutzerkonto.</p></article>
+          <article><p className="privacy-number">08</p><h2>SPEICHERDAUER</h2><p>Personenbezogene Daten aus einer direkten Kommunikation werden nur so lange gespeichert, wie dies für den jeweiligen Kommunikations- oder Geschäftszweck erforderlich ist und soweit gesetzliche Aufbewahrungspflichten oder andere rechtliche Anforderungen bestehen.</p></article>
+          <article><p className="privacy-number">09</p><h2>EMPFÄNGER / WEITERGABE</h2><p>Daten können, soweit erforderlich, durch Anbieter der von Ihnen gewählten Kommunikations- oder technischen Dienste verarbeitet werden. Eine Weitergabe kann außerdem erfolgen, wenn dies aufgrund gesetzlicher oder vertraglicher Umstände erforderlich ist.</p></article>
+          <article><p className="privacy-number">10</p><h2>RECHTE BETROFFENER PERSONEN</h2><p>Im Rahmen der gesetzlichen Voraussetzungen haben Sie insbesondere das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Eine erteilte Einwilligung können Sie mit Wirkung für die Zukunft widerrufen. Außerdem besteht das Recht, sich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren.</p></article>
+          <article><p className="privacy-number">11</p><h2>AKTUALITÄT</h2><p>Diese Datenschutzerklärung kann angepasst werden, wenn sich die Website, Kontaktmöglichkeiten oder die damit verbundenen Verarbeitungen ändern.</p><p className="privacy-status">STAND: SEPTEMBER 2026</p></article>
+        </div></section>
+
+        <section className="standards-transition" aria-labelledby="standards-title"><div className="standards-container"><p>UNSERE GRUNDSÄTZE IM SERVICE</p><h2 id="standards-title"><span>UNSERE</span><span>STANDARDS.</span></h2><p>Ihr Eigentum behandeln wir mit Verantwortung und Respekt. Wenn wir in Ihrem Zuhause, Büro, Unternehmen oder einer anderen Immobilie tätig sind, ist ein sorgfältiger und verantwortungsbewusster Umgang mit Ihren Räumen grundlegend.</p></div></section>
+        <section className="standards-list-section" aria-labelledby="standards-list-title"><div className="standards-container"><header className="standards-list-header"><p className="standards-section-label">WOFÜR WIR STEHEN</p><h2 id="standards-list-title">KLARE HALTUNG.<br />SORGFÄLTIGE ARBEIT.</h2></header><ol className="standards-list">{standards.map((standard) => (<li key={standard.number}><span className="standards-number" aria-hidden="true">{standard.number}</span><div><h3>{standard.title}</h3><p>{standard.description}</p></div></li>))}</ol></div></section>
+        <section className="standards-closing" aria-labelledby="standards-closing-title"><div className="standards-container standards-closing-grid"><div><p className="standards-section-label">UNSER VERSPRECHEN IM ALLTAG</p><h2 id="standards-closing-title"><span>VERTRAUEN.</span><span>SORGFALT.</span><span>VERANTWORTUNG.</span></h2></div><div className="standards-closing-action"><p>Sie möchten einen Service anfragen? Sprechen Sie mit uns über Ihr Anliegen.</p><a href={`${applicationBase}#kontakt`} onClick={(event) => { event.preventDefault(); onContactTriggerRef(event.currentTarget); onContactOpen() }}>SERVICE ANFRAGEN <Arrow /></a></div></div></section>
+      </main>
+      <SiteFooter servicePage onEvidenceOpen={onEvidenceOpen} />
+    </div>
+  )
+}
+
 function App() {
   const [aboutStageActive, setAboutStageActive] = useState(false)
   const [contactModalOpen, setContactModalOpen] = useState(false)
@@ -1056,6 +1118,7 @@ function App() {
   const isBaumanagementPage = applicationPathname === '/baumanagement'
   const isFacilityManagementPage = applicationPathname === '/facility-management'
   const isTransportPage = applicationPathname === '/transport'
+  const isDatenschutzPage = applicationPathname === '/datenschutz'
 
   useEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration
@@ -1178,6 +1241,19 @@ function App() {
     return (
       <>
         <TransportPage
+          onContactOpen={() => setContactModalOpen(true)}
+          onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
+          onEvidenceOpen={() => setEvidenceModalOpen(true)}
+        />
+        {contactModalOpen && <ContactModal onClose={() => setContactModalOpen(false)} />}
+        {evidenceModalOpen && <EvidenceModal onClose={() => setEvidenceModalOpen(false)} />}
+      </>
+    )
+  }
+  if (isDatenschutzPage) {
+    return (
+      <>
+        <DatenschutzPage
           onContactOpen={() => setContactModalOpen(true)}
           onContactTriggerRef={(element) => { contactTriggerRef.current = element }}
           onEvidenceOpen={() => setEvidenceModalOpen(true)}
