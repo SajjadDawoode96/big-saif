@@ -45,7 +45,8 @@ import transportImage from './assets/projects/transport.png'
 import transportImage640 from './assets/projects/transport-640.webp'
 import transportImage960 from './assets/projects/transport-960.webp'
 import transportImage1440 from './assets/projects/transport-1440.webp'
-import { baumanagementProjectGroups, type BaumanagementProjectComparison, type BaumanagementProjectGroup } from './data/baumanagementProjects'
+import { baumanagementGalleryProjects } from './data/baumanagementProjects'
+import { baumanagementBeforeAfterGroups, type BaumanagementBeforeAfterProject, type BaumanagementBeforeAfterGroup } from './data/baumanagementBeforeAfter'
 import { facilityProjectGroups, type FacilityProjectComparison } from './data/facilityProjects'
 
 import './App.css'
@@ -282,7 +283,7 @@ function BeforeAfterComparison({
   onPositionChange,
   comparisonLabel,
 }: {
-  project: BaumanagementProjectComparison
+  project: BaumanagementBeforeAfterProject
   position: number
   onPositionChange: (position: number) => void
   comparisonLabel: string
@@ -374,7 +375,7 @@ function BeforeAfterComparison({
   )
 }
 
-function BaumanagementProjectGroup({ group, groupNumber }: { group: BaumanagementProjectGroup; groupNumber: number }) {
+function BaumanagementProjectGroup({ group, groupNumber }: { group: BaumanagementBeforeAfterGroup; groupNumber: number }) {
   const initialProjectIndex = Math.min(1, group.projects.length - 1)
   const [activeIndex, setActiveIndex] = useState(initialProjectIndex)
   const [comparisonPositions, setComparisonPositions] = useState(() => group.projects.map(() => 50))
@@ -443,7 +444,7 @@ function BaumanagementProjectShowcase() {
         </header>
 
         <div className="baumanagement-project-groups">
-          {baumanagementProjectGroups.map((group, index) => (
+          {baumanagementBeforeAfterGroups.map((group, index) => (
             <BaumanagementProjectGroup group={group} groupNumber={index + 1} key={group.id} />
           ))}
         </div>
@@ -666,6 +667,89 @@ function EvidenceModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+function BaumanagementProjectGallery() {
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const selectedProject = selectedProjectIndex === null ? null : baumanagementGalleryProjects[selectedProjectIndex]
+  const selectedProjectLabel = selectedProject?.projectLabel ?? ''
+  const galleryImages = selectedProject?.galleryImages ?? []
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+
+    const previousOverflow = document.body.style.overflow
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setLightboxIndex(null)
+      if (event.key === 'ArrowLeft') setLightboxIndex((current) => current === null ? current : (current - 1 + galleryImages.length) % galleryImages.length)
+      if (event.key === 'ArrowRight') setLightboxIndex((current) => current === null ? current : (current + 1) % galleryImages.length)
+    }
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [lightboxIndex, galleryImages.length])
+
+  const closeProject = () => {
+    setLightboxIndex(null)
+    setSelectedProjectIndex(null)
+  }
+
+  return (
+    <section className="baumanagement-gallery" aria-labelledby="project-gallery-title">
+      <div className="baumanagement-gallery-inner">
+        <header className="baumanagement-gallery-header">
+          <p>BAUMANAGEMENT</p>
+          <h2 id="project-gallery-title">PROJEKTGALERIE</h2>
+        </header>
+
+        {selectedProject ? (
+          <div className="baumanagement-gallery-project">
+            <button className="baumanagement-gallery-back" type="button" onClick={closeProject}>← ZURÜCK ZUR GALERIE</button>
+            <h3>{selectedProject.title ?? `PROJEKT ${selectedProjectLabel}`}</h3>
+            {selectedProject.location && <p className="baumanagement-gallery-project-location">{selectedProject.location}</p>}
+            <div className="baumanagement-gallery-images">
+              {galleryImages.map((image, index) => (
+                <button key={image.label} className="baumanagement-gallery-image" type="button" onClick={() => setLightboxIndex(index)} aria-label={`${image.label} von Projekt ${selectedProjectLabel} vergrößern`}>
+                  <img src={image.fallbackImage} alt={image.alt} loading="lazy" decoding="async" />
+                  <span>{image.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="baumanagement-folder-grid">
+            {baumanagementGalleryProjects.map((project, index) => (
+              <button key={project.id} className="baumanagement-folder" type="button" onClick={() => setSelectedProjectIndex(index)} aria-label={`Projekt ${project.projectLabel} öffnen`}>
+                <span className="baumanagement-folder-tab" aria-hidden="true" />
+                <img src={project.coverFallbackImage} alt={project.coverAlt} loading="lazy" decoding="async" />
+                <span className="baumanagement-folder-meta">
+                  <span>{project.projectLabel}</span>
+                  <span>{project.title ?? `PROJEKT ${project.projectLabel}`}</span>
+                  <span>{project.galleryImages.length} BILDER</span>
+                  <span aria-hidden="true">→</span>
+                  <span>ÖFFNEN</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {lightboxIndex !== null && selectedProject && (
+        <div className="baumanagement-lightbox" role="dialog" aria-modal="true" aria-label={`Bild ${lightboxIndex + 1} von Projekt ${selectedProjectLabel}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setLightboxIndex(null) }}>
+          <button className="baumanagement-lightbox-close" type="button" aria-label="Bildansicht schließen" onClick={() => setLightboxIndex(null)}>×</button>
+          <button className="baumanagement-lightbox-previous" type="button" aria-label="Vorheriges Bild" onClick={() => setLightboxIndex((lightboxIndex - 1 + galleryImages.length) % galleryImages.length)}>←</button>
+          <img src={galleryImages[lightboxIndex].fallbackImage} alt={galleryImages[lightboxIndex].alt} />
+          <button className="baumanagement-lightbox-next" type="button" aria-label="Nächstes Bild" onClick={() => setLightboxIndex((lightboxIndex + 1) % galleryImages.length)}>→</button>
+        </div>
+      )}
+    </section>
+  )
+}
+
 function BaumanagementPage({
   onContactOpen,
   onContactTriggerRef,
@@ -707,6 +791,7 @@ function BaumanagementPage({
 
         <BaumanagementServiceAreas />
         <BaumanagementProjectShowcase />
+        <BaumanagementProjectGallery />
       </main>
       <div className="baumanagement-footer-shell"><SiteFooter servicePage onEvidenceOpen={onEvidenceOpen} /></div>
     </div>

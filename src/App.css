@@ -4609,6 +4609,47 @@ background: linear-gradient(
   }
 }
 
+/* ========================================
+   BAUMANAGEMENT — PROJECT GALLERY
+======================================== */
+
+.baumanagement-gallery { border-top: 1px solid rgba(var(--baumanagement-gold-rgb), 0.28); background: #0e0e0e; }
+.baumanagement-gallery-inner { width: min(100%, 1440px); margin-inline: auto; padding: clamp(4.5rem, 7vw, 7rem) var(--page-gutter); }
+.baumanagement-gallery-header p, .baumanagement-gallery-header h2, .baumanagement-gallery-project h3 { margin: 0; }
+.baumanagement-gallery-header p { margin-bottom: 1rem; color: var(--baumanagement-gold); font-size: 0.75rem; font-weight: 750; letter-spacing: 0.2em; }
+.baumanagement-gallery-header h2 { color: var(--color-white); font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 780; line-height: 0.92; letter-spacing: -0.065em; }
+.baumanagement-folder-grid, .baumanagement-gallery-images { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.75rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
+.baumanagement-folder { position: relative; min-width: 0; aspect-ratio: 16 / 10; padding: 0; overflow: hidden; border: 0; clip-path: polygon(0 8%, 34% 8%, 39% 0, 100% 0, 100% 100%, 0 100%); color: var(--color-white); background: #191919; text-align: left; cursor: pointer; filter: drop-shadow(0 0 0.75px rgba(var(--baumanagement-gold-rgb), 0.74)); transition: filter 180ms ease, transform 180ms ease; }
+.baumanagement-folder-tab { display: none; }
+.baumanagement-folder img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.7) brightness(0.72) contrast(1.05); transition: transform 220ms ease, filter 180ms ease; }
+.baumanagement-folder::after { position: absolute; inset: 0; content: ''; pointer-events: none; background: linear-gradient(180deg, rgba(8, 8, 8, 0.08) 30%, rgba(8, 8, 8, 0.22) 51%, rgba(8, 8, 8, 0.9) 100%); }
+.baumanagement-folder-meta { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: auto 1fr auto; gap: 0.2rem 0.65rem; align-items: end; padding: 2.6rem 1rem 0.95rem; color: var(--color-white); font-size: 0.65rem; font-weight: 750; letter-spacing: 0.12em; line-height: 1.1; }
+.baumanagement-folder-meta span:first-child { color: var(--baumanagement-gold); font-family: var(--font-heading); font-size: 1.65rem; font-weight: 780; letter-spacing: -0.06em; }
+.baumanagement-folder-meta span:nth-child(2) { padding-bottom: 0.12rem; font-size: 0.72rem; font-weight: 800; }
+.baumanagement-folder-meta span:nth-child(3) { grid-column: 2; color: rgba(255, 255, 255, 0.65); font-size: 0.57rem; }
+.baumanagement-folder-meta span:nth-child(4) { grid-column: 3; grid-row: 1 / span 2; color: var(--baumanagement-gold); font-size: 1.2rem; }
+.baumanagement-folder-meta span:last-child { grid-column: 1 / -1; max-height: 0; overflow: hidden; color: var(--baumanagement-gold); font-size: 0.6rem; font-weight: 800; letter-spacing: 0.16em; opacity: 0; transition: max-height 180ms ease, opacity 180ms ease; }
+.baumanagement-folder:hover, .baumanagement-folder:focus-visible { filter: drop-shadow(0 0 1px var(--baumanagement-gold)); transform: translateY(-0.18rem); }
+.baumanagement-folder:hover img, .baumanagement-folder:focus-visible img { transform: scale(1.025); filter: saturate(0.72) brightness(0.68) contrast(1.06); }
+.baumanagement-folder:hover .baumanagement-folder-meta span:last-child, .baumanagement-folder:focus-visible .baumanagement-folder-meta span:last-child { max-height: 1rem; opacity: 1; }
+.baumanagement-folder:focus-visible, .baumanagement-gallery-back:focus-visible, .baumanagement-gallery-image:focus-visible, .baumanagement-lightbox button:focus-visible { outline: 2px solid var(--baumanagement-gold); outline-offset: 3px; }
+.baumanagement-gallery-back { padding: 0.7rem 0; border: 0; color: var(--baumanagement-gold); background: transparent; font: inherit; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; cursor: pointer; }
+.baumanagement-gallery-back:hover { color: var(--color-white); }
+.baumanagement-gallery-project h3 { margin-top: 1.5rem; color: var(--color-white); font-family: var(--font-heading); font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -0.04em; }
+.baumanagement-gallery-project-location { margin: 0.45rem 0 0; color: var(--baumanagement-gold); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.14em; }
+.baumanagement-gallery-images { margin-top: 2rem; }
+.baumanagement-gallery-image { position: relative; padding: 0; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.2); background: #171717; cursor: zoom-in; }
+.baumanagement-gallery-image img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 220ms ease; }
+.baumanagement-gallery-image:hover img, .baumanagement-gallery-image:focus-visible img { transform: scale(1.04); }
+.baumanagement-gallery-image span { position: absolute; right: 0.75rem; bottom: 0.75rem; padding: 0.35rem 0.45rem; color: var(--color-charcoal); background: var(--baumanagement-gold); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; }
+.baumanagement-lightbox { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; padding: clamp(1rem, 4vw, 4rem); background: rgba(5, 5, 5, 0.94); }
+.baumanagement-lightbox > img { max-width: min(100%, 82rem); max-height: calc(100vh - 8rem); object-fit: contain; border: 1px solid rgba(var(--baumanagement-gold-rgb), 0.5); }
+.baumanagement-lightbox button { position: absolute; width: 2.9rem; height: 2.9rem; display: grid; place-items: center; border: 1px solid rgba(var(--baumanagement-gold-rgb), 0.72); color: var(--baumanagement-gold); background: #151515; font-size: 1.3rem; cursor: pointer; }
+.baumanagement-lightbox button:hover { color: var(--color-charcoal); background: var(--baumanagement-gold); }
+.baumanagement-lightbox-close { top: 1.25rem; right: 1.25rem; }.baumanagement-lightbox-previous { top: 50%; left: 1.25rem; transform: translateY(-50%); }.baumanagement-lightbox-next { top: 50%; right: 1.25rem; transform: translateY(-50%); }
+@media (max-width: 900px) { .baumanagement-folder-grid, .baumanagement-gallery-images { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .baumanagement-folder-grid, .baumanagement-gallery-images { grid-template-columns: 1fr; } .baumanagement-lightbox { padding: 4.75rem 1rem 1rem; } .baumanagement-lightbox > img { max-height: calc(100vh - 9rem); } .baumanagement-lightbox-previous { left: 0.5rem; } .baumanagement-lightbox-next { right: 0.5rem; } }
+
 /* Shared mobile composition: preserve desktop geometry while giving stacked content
    a consistent reading rhythm and safe shrink behavior. */
 @media (max-width: 699px) {
